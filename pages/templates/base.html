@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pages/style.css' %}">
+<!-- SET DEFAULT BACKGROUND TO BLUE SA PAGES NGA WALA GI FLAG og "is_intro"-->
+    {% if not is_intro %}
+    <style>
+        body{height:100%;background:#0a49b3;}
+    </style>
+    {% endif %}
+    {% block head %}{% endblock head %}
+</head>
+<body>
+    {% block content %}{% endblock content %}
+
+    <!-- SHOW THE LEFT NAV IF THE PAGE IS NOT INTRO PAGE -->
+        {% if is_intro is None or not is_intro %}
+        <div class="left_nav">
+            <div class="main_logo"><a href="{% url 'home' %}"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'lesson' %}">Lessons</a></li>
+                    <li><a href="#!">Calendar</a></li>
+                    <li><a href="#!">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="nav_footer">
+                <a href="#!">READ MORE ABOUT US</a>
+            </div>
+        </div>
+        {% endif %}
+
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

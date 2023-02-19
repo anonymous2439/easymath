@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'pages/login.css' %}">
+{% endblock head %}
+
+{% block content %}
+    <div id="login">
+        <div class="login_header">
+            <div class="wrapper">
+                <div class="login_header_con">
+                    <div class="login_logo"><a href="{% url 'home' %}"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="login_main">
+            <div class="wrapper">
+                <div class="login_con">
+                    <div class="login_box">
+                        <h2>Log in</h2>
+                        <p>Enter your Username and Password:</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="login_form_con">
+                                <label id="{{ login_form.username.id_for_label }}">Username</label>
+                                {{ login_form.username }}
+                            </div>
+                            <div class="login_form_con">
+                                <label id="{{ login_form.password.id_for_label }}">Username</label>
+                                {{ login_form.password }}
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content%}

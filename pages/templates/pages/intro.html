@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <header>
+        <div class="wrapper">
+            <div class="header_con">
+                <div class="main_logo"><a href="#"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
+                <div class="user_functions">
+                    <a href="{% url 'login' %}">Log in</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="banner">
+        <div class="wrapper">
+            <div class="bnr_con">
+                <div class="slider">
+                    <figure><img src="{% static 'pages/images/bnr1.jpg' %}"/></figure>
+                </div>
+                <div class="bnr_info">
+                    <h2>Welcome to EasyMath</h2>
+                    <p>A Sub-Heading Text Goes Here <b>Insert Sub-Heading Text Here</b></p>
+                    <a href="#">About Us</a>
+                </div>
+                <div class="bnr_img">
+                    <figure><img  src="{% static 'pages/images/bnr_img.png' %}"/></figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="middle">
+        <div class="wrapper">
+            <div class="mid_con">
+                <div class="mid_img">
+                    <figure><img src="{% static 'pages/images/mid_img1.png' %}"/></figure>
+                    <figure><img src="{% static 'pages/images/mid_img2.png' %}"/></figure>
+                </div>
+                <div class="mid_info">
+                    <h2>Quick Learning Lessons</h2>
+                    <p>We are excited to post contents on the website. This space is reserved for more information about the company. These dummy text is intended to show you the volume of content that will be used on this particular page.  Thank you for visiting our website. These contents are temporary and are for display purposes only.  We can post company information here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom1">
+        <div class="wrapper">
+            <div class="btm1_con">
+                <div class="btm1_bg">
+                    <figure><img src="{% static 'pages/images/btm1_bg.jpg' %}"/></figure>
+                </div>
+                <div class="btm1_boxes">
+                    <section>
+                        <figure><img src="{% static 'pages/images/btm1_box1_img.jpg' %}"/></figure>
+                        <p>“We are excited to post contents on the website. This space is reserved for more information about the company. These dummy text is intended to show you the volume of content that will be used on this particular page.  Thank you for visiting our website. These contents are temporary and are for display purposes only.  We can post company information here.”</p>
+                        <h2>- Dummy Name <span>11/13/2022</span></h2>
+                    </section>
+                    <section>
+                        <figure><img src="{% static 'pages/images/btm1_box2_img.jpg' %}"/></figure>
+                        <p>“We are excited to post contents on the website. This space is reserved for more information about the company. These dummy text is intended to show you the volume of content that will be used on this particular page.  Thank you for visiting our website. These contents are temporary and are for display purposes only.  We can post company information here.”</p>
+                        <h2>- Dummy Name <span>11/13/2022</span></h2>
+                    </section>
+                    <section>
+                        <figure><img src="{% static 'pages/images/btm1_box3_img.jpg' %}"/></figure>
+                        <p>“We are excited to post contents on the website. This space is reserved for more information about the company. These dummy text is intended to show you the volume of content that will be used on this particular page.  Thank you for visiting our website. These contents are temporary and are for display purposes only.  We can post company information here.”</p>
+                        <h2>- Dummy Name <span>11/13/2022</span></h2>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="wrapper">
+            <div class="footer_con">
+                <div class="footer_box">
+                    <h2>Sign up for the newsletter</h2>
+                    <form>
+                        <input placeholder="Enter Your Email"/>
+                        <button type="submit">SUBSCRIBE</button>
+                    </form>
+                </div>
+                <div class="footer_logo">
+                    <a><figure><img src="{% static 'pages/images/footer_logo.png' %}"/></figure></a>
+                </div>
+                <div class="footer_info">
+                    <h2>Justillano C. Tagacanao BSIT-4</h2>
+                </div>
+                <div class="social_media">
+                    <ul>
+                        <li><a href="#"><figure><img src="{% static 'pages/images/facebook.png' %}"/></figure></a></li>
+                        <li><a href="#"><figure><img src="{% static 'pages/images/twitter.png' %}"/></figure></a></li>
+                    </ul>
+                </div>
+                <div class="contact_info">
+                    <ul>
+                        <li>
+                            <h3>Contact Details</h3>
+                            <address>123 Street Name, Suite 123 <span>CIty Name, State 12345</span></address>
+                            <span>Phone: <mark>123-456-7890</mark></span>
+                            Email: <a href="mailto:sample@gmail.com">sample@gmail.com</a>
+                        </li>
+                        <li>
+                            <h3>Opening Hours</h3>
+                            <small>Monday-Friday:</small>
+                            <span>8:00am - 11:00am  |  1:30pm - 17:00pm</span>
+                            <span>Saturday: 9:00am - 11:00am |  1:30pm - 17:00pm</span>
+                            Sunday: 8:00am - 19:00pm
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock content %}
