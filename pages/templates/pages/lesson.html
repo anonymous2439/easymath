@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'pages/signup.css' %}">
+
 {% endblock head %}
 
 {% block content %}
@@ -27,16 +27,13 @@
                 </div>
                 <div class="lesson_title">Lesson</div>
                 <div class="lesson_main">
+                    {% for lesson in lessons %}
                     <section>
-                        <h2>Week 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
-                        <p>Due Date: 11/20/22 at 11:59 pm</p>
-                        <a href="#">Start Answering</a>
+                        <h2>{{ lesson.title }}</h2>
+                        <p>{{ lesson.description }}</p>
+                        <a href="{% url 'activity' lesson_id=lesson.pk %}">Start Answering</a>
                     </section>
-                    <section>
-                        <h2>Week 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
-                        <p>Due Date: 11/20/22 at 11:59 pm</p>
-                        <a href="#">Start Answering</a>
-                    </section>
+                    {% endfor %}
                 </div>
             </div>
         </div>

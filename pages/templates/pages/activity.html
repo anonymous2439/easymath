@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="activity" class="activity">
+
+        <div class="wrapper">
+            <div class="activity_con">
+                <div class="activities">
+                    {% for activity in activities %}
+                    <section>
+                        <h2>{{ activity.title }}</h2>
+                        <p>{{ activity.desctiption }}</p>
+                        <a href="{% url 'question' activity_id=activity.pk %}">Play</a>
+                    </section>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content%}

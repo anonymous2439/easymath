@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from accounts.models import User
 from .forms import LoginForm
+from .models import Lesson, Activity
 
 
 def intro(request):
@@ -36,4 +37,20 @@ def login_user(request):
 
 def lesson(request):
     template = 'pages/lesson.html'
-    return render(request, template)
+    lessons = Lesson.objects.all()
+    context = {"lessons": lessons}
+    return render(request, template, context)
+
+
+def activity(request, lesson_id):
+    template = 'pages/activity.html'
+    activities = Lesson.objects.get(pk=lesson_id).activity_set.all()
+    context = {'activities': activities}
+    return render(request, template, context)
+
+
+def question(request, activity_id):
+    template = 'pages/question.html'
+    questions = Activity.objects.get(pk=activity_id).question_set.all()
+    context = {'questions': questions}
+    return render(request, template, context)

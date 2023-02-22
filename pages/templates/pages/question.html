@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="question" class="question">
+
+        <div class="wrapper">
+            <div class="activity_con">
+                <div class="question">
+                    {% for question in questions %}
+                    <section>
+                        <h2>{{ question.name|safe }}</h2>
+                        <p>choices:</p>
+
+                            {% for answer in question.answer_set.all %}
+                            <input type="radio" name="answer" value="{{ answer.pk }}" id="answer-{{ answer.pk }}" /><label for="answer-{{ answer.pk }}">{{ answer.name }}</label>
+                            {% endfor %}
+                    </section>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content%}
