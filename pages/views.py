@@ -86,7 +86,7 @@ def difficulty_view(request, lesson_id):
 def activity_view(request, lesson_id, difficulty):
     template = 'pages/activity.html'
     activities = Lesson.objects.get(pk=lesson_id).activity_set.filter(difficulty=difficulty)
-    context = {'activities': activities}
+    context = {'activities': activities, 'difficulty': difficulty}
     return render(request, template, context)
 
 

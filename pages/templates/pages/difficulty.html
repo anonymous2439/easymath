@@ -9,6 +9,7 @@
     <div id="difficulty" class="difficulty">
         <div class="wrapper">
             <div class="difficulty_con">
+                <h2 class="difficulty_title">DIFFICULTY</h2>
                 <ul>
                     {% for key, value in difficulties %}
                     <li><a href="{% url 'activity' lesson_id=lesson_id difficulty=key %}">{{ value }}</a></li>

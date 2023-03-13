@@ -10,11 +10,12 @@
 
         <div class="wrapper">
             <div class="activity_con">
+                <h2 class="activity_title">{{ difficulty }} mode</h2>
                 <div class="activities">
                     {% for activity in activities %}
                     <section>
                         <h2>{{ activity.title }}</h2>
-                        <p>{{ activity.desctiption }}</p>
+                        <p>{{ activity.description }}</p>
                         <a href="{% url 'question' activity_id=activity.pk %}">Play</a>
                     </section>
                     {% endfor %}

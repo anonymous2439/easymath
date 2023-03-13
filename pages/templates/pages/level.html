@@ -11,8 +11,10 @@
         <div class="wrapper">
             <div class="level_con">
                 {% for level in levels %}
-                    <h2>{{ level.name }}</h2>
-                    <a href="{% url 'lesson' level_id=level.pk %}">Click Here</a>
+                    <section>
+                        <h2>{{ level.name }}</h2>
+                        <a href="{% url 'lesson' level_id=level.pk %}">Click Here</a>
+                    </section>
                 {% endfor %}
             </div>
         </div>
