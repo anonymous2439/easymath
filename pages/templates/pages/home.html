@@ -2,5 +2,14 @@
 {% load static %}
 
 {% block content %}
-Homepage
+    <div id="home" class="home">
+        <div class="wrapper">
+
+            <div class="home_con">
+                <p>Score: {{ score }}</p>
+                <p>Total Answered Questions: {{ total_answered_questions }}</p>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

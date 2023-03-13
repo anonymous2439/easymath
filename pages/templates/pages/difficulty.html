@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="difficulty" class="difficulty">
+        <div class="wrapper">
+            <div class="difficulty_con">
+                <ul>
+                    {% for key, value in difficulties %}
+                    <li><a href="{% url 'activity' lesson_id=lesson_id difficulty=key %}">{{ value }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content%}

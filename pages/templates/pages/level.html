@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="level" class="level">
+
+        <div class="wrapper">
+            <div class="level_con">
+                {% for level in levels %}
+                    <h2>{{ level.name }}</h2>
+                    <a href="{% url 'lesson' level_id=level.pk %}">Click Here</a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock content%}

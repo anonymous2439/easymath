@@ -27,13 +27,13 @@
                 </div>
                 <div class="lesson_title">Lesson</div>
                 <div class="lesson_main">
-                    {% for lesson in lessons %}
-                    <section>
-                        <h2>{{ lesson.title }}</h2>
-                        <p>{{ lesson.description }}</p>
-                        <a href="{% url 'lesson_single' lesson_id=lesson.pk %}">View</a>
-                    </section>
-                    {% endfor %}
+                    {% if lesson %}
+                        {{ lesson.title }}
+                        {{ lesson.description }}
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="{% url 'lesson_finished' lesson_id=lesson.pk %}">Finish Lesson</a>
                 </div>
             </div>
         </div>

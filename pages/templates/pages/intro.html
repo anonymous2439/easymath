@@ -5,9 +5,13 @@
     <header>
         <div class="wrapper">
             <div class="header_con">
-                <div class="main_logo"><a href="#"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
+                <div class="main_logo"><a href="{% url 'home' %}"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
                 <div class="user_functions">
+                    {% if not user.is_authenticated %}
                     <a href="{% url 'login' %}">Log in</a>
+                    {% else %}
+                    <p style="color:#fff;">Welcome {{ user }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -21,7 +25,7 @@
                 <div class="bnr_info">
                     <h2>Welcome to EasyMath</h2>
                     <p>A Sub-Heading Text Goes Here <b>Insert Sub-Heading Text Here</b></p>
-                    <a href="#">About Us</a>
+                    <a href="{% url 'home' %}">Enter Site</a>
                 </div>
                 <div class="bnr_img">
                     <figure><img  src="{% static 'pages/images/bnr_img.png' %}"/></figure>
