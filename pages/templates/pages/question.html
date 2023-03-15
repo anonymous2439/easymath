@@ -17,11 +17,17 @@
                         <p>choices:</p>
                             <form method="post">
                                 {% csrf_token %}
-                            {% for answer in question.answer_set.all %}
+                                {% for answer in question.answer_set.all %}
 
-                                <input type="radio" name="answer" value="{{ answer.pk }}" id="answer-{{ answer.pk }}" /><label for="answer-{{ answer.pk }}">{{ answer.name }}</label>
+                                    <input type="radio" name="answer" value="{{ answer.pk }}" id="answer-{{ answer.pk }}"
+                                           {% for user_answer in answer.useranswer_set.all %}
+                                           {% if user_answer %}
+                                    checked
+                                           {% endif %}
+                                            {% endfor %}
+                                    /><label for="answer-{{ answer.pk }}">{{ answer.name }}</label>
 
-                            {% endfor %}
+                                {% endfor %}
                                 <button type="submit">Submit</button>
                             </form>
                     </section>

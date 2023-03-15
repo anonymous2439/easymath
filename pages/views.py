@@ -95,8 +95,21 @@ def question_view(request, activity_id):
     if request.POST:
         answer = Answer.objects.get(pk=request.POST.get('answer'))
         UserAnswer(user=request.user, answer=answer).save()
-    questions = Activity.objects.get(pk=activity_id).question_set.all()
-    user_answers = UserAnswer.objects.filter(user=request.user, answer__question__in=questions)
-    print(user_answers)
+    all_questions = Activity.objects.get(pk=activity_id).question_set.all()
+    # user_answers = UserAnswer.objects.filter(user=request.user, answer__question__in=questions)
+    user_answers = UserAnswer.objects.filter(user=request.user)
+    questions = []
+    for all_question in all_questions:
+        answered_question = False
+        question = all_question
+        for user_answer in user_answers:
+            if all_question == user_answer.answer.question:
+                answered_question = True
+                question = user_answer.answer.question
+                break
+        questions.append(question)
+
+
+    print(questions)
     context = {'questions': questions, 'user_answers': user_answers}
     return render(request, template, context)
