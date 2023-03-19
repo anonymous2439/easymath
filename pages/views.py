@@ -1,15 +1,20 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.db import IntegrityError
+from django.db.models import Count, Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from accounts.models import User
 from .forms import LoginForm
-from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson
+from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity
+from django.utils.safestring import mark_safe
 
 difficulties = (
     ('easy', 'EASY MODE'),
     ('medium', 'MEDIUM MODE'),
     ('hard', 'HARD MODE'),
 )
+
+ACTIVITY_CONSTRAINT_ERROR = 'You already have submitted this activity'
 
 
 def intro_view(request):
@@ -20,8 +25,9 @@ def intro_view(request):
 def home_view(request):
     template = 'pages/home.html'
     user = request.user
-    score = UserAnswer.objects.filter(user=user, answer__is_correct=True).count()
-    total_answered_questions = UserAnswer.objects.filter(user=user).count()
+    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
+    score = UserAnswer.objects.filter(user=user, answer__is_correct=True, answer__question__activity__in=activities_submitted).count()
+    total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted).count()
     context = {
         'score': score,
         'total_answered_questions': total_answered_questions,
@@ -85,31 +91,50 @@ def difficulty_view(request, lesson_id):
 
 def activity_view(request, lesson_id, difficulty):
     template = 'pages/activity.html'
-    activities = Lesson.objects.get(pk=lesson_id).activity_set.filter(difficulty=difficulty)
+    user = request.user
+    activities = Lesson.objects.get(pk=lesson_id).activity_set.filter(difficulty=difficulty).annotate(
+        submitted=Count('submittedactivity', filter=Q(submittedactivity__submitted_by=user))
+    )
     context = {'activities': activities, 'difficulty': difficulty}
     return render(request, template, context)
 
 
 def question_view(request, activity_id):
-    template = 'pages/question.html'
-    if request.POST:
-        answer = Answer.objects.get(pk=request.POST.get('answer'))
-        UserAnswer(user=request.user, answer=answer).save()
+    # maoh ni ang mu handle sa pag click sa radio button para ma save sa user_answer table
+    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        answer_id = request.POST.get('answer')
+        answer = Answer.objects.get(pk=answer_id)
+        # pag handle ni sa answer whether isave ang answer or iedit ra if ever mana nig answer nga question
+        user_answer, created = UserAnswer.objects.get_or_create(user=request.user, answer__question=answer.question,
+                                                                defaults={'answer': answer})
+        if not created:
+            user_answer.answer = answer
+            user_answer.save()
+        return JsonResponse({'success': True})
+
+    # para ni sa pag submit sa activity
+    elif request.method == 'POST':
+        activity = Activity.objects.get(pk=request.POST.get('activity_id'))
+        submitted_by = request.user
+        # nag check ni for IntegrityError, para mahibaw an if naa nay na submit nga activity daan sa database or wala
+        try:
+            SubmittedActivity.objects.create(activity=activity, submitted_by=submitted_by)
+            messages.success(request, "Successfully submitted the activity")
+        except IntegrityError:
+            messages.error(request, ACTIVITY_CONSTRAINT_ERROR)
+            pass
+
+    # naa diri ang pag get sa question with their respective answers then ipasa dayon sa template
     all_questions = Activity.objects.get(pk=activity_id).question_set.all()
-    # user_answers = UserAnswer.objects.filter(user=request.user, answer__question__in=questions)
     user_answers = UserAnswer.objects.filter(user=request.user)
     questions = []
-    for all_question in all_questions:
-        answered_question = False
-        question = all_question
-        for user_answer in user_answers:
-            if all_question == user_answer.answer.question:
-                answered_question = True
-                question = user_answer.answer.question
-                break
-        questions.append(question)
+    for question in all_questions:
+        question_dict = {'question': question, 'answers': question.answer_set.all()}
+        user_answer = user_answers.filter(answer__question=question).first()
+        if user_answer:
+            question_dict['user_answer'] = user_answer
+        questions.append(question_dict)
+    # ang reason ngano gipasa sad ang activity_id kay para inig submit sa activity later on, mahibaw an kung onsa nga activity ang gi submit
+    context = {'questions': questions, 'activity_id': activity_id}
+    return render(request, 'pages/question.html', context)
 
-
-    print(questions)
-    context = {'questions': questions, 'user_answers': user_answers}
-    return render(request, template, context)

@@ -28,11 +28,11 @@
                 <div class="lesson_title">{{ lesson.title }}</div>
                 <div class="lesson_main">
                     {% if lesson %}
-                        {{ lesson.description }}
+                        {{ lesson.description|safe }}
                     {% endif %}
                 </div>
                 <div class="lesson_finish">
-                    <a href="{% url 'lesson_finished' lesson_id=lesson.pk %}">Finish Lesson</a>
+                    <a href="{% url 'lesson_finished' lesson_id=lesson.pk %}">Finish Lesson and start an activity</a>
                 </div>
             </div>
         </div>

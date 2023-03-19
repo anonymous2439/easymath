@@ -16,7 +16,10 @@
                     <section>
                         <h2>{{ activity.title }}</h2>
                         <p>{{ activity.description }}</p>
+                        {% if activity.submitted > 0 %}
+                        {% else %}
                         <a href="{% url 'question' activity_id=activity.pk %}">Play</a>
+                        {% endif %}
                     </section>
                     {% endfor %}
                 </div>

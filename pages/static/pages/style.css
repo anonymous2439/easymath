@@ -168,6 +168,10 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .contact_info ul li a:hover { text-decoration: underline; }
  .contact_info ul { display: flex; justify-content: space-between; }
 
+/* messages */
+.messages .error { background: #ff0000b3; }
+.messages li { color: #fff; text-align: center; padding: 20px; border-radius: 20px; margin-bottom: 10px; }
+
  /* level */
  .level_con { padding: 40px 0; }
  .level_con section h2 { color: #fff; font-size: 55px; line-height: 100%; }
@@ -201,7 +205,7 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
 .lesson_footer p { color: #333; font-size: 22px; font-weight: 700; text-align: center; line-height: 64px; }
  .lesson_footer { background: #fff; position: absolute; bottom: 0; left: 0; right: 0; }
 
-.lesson_finish a { font-size: 18px; font-weight: 700; background: #2cd18b; width: 200px; height: 43px; line-height: 43px; text-align: center; color: #fff; border-radius: 7px; margin: 20px 0 0 auto; display:block;}
+.lesson_finish a { font-size: 18px; font-weight: 700; background: #2cd18b; width: 340px; height: 43px; line-height: 43px; text-align: center; color: #fff; border-radius: 7px; margin: 20px 0 0 auto; display:block;}
  .lesson_finish a:hover { opacity: .7; }
 
  /* difficulty */
@@ -212,6 +216,7 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .difficulty_con ul li a { box-shadow: -10px 10px 30px -1px #1a1a1a36; border-radius: 20px; }
 
  /* activities */
+ .activity_con { padding: 100px 40px 40px; }
  .activity_title { font-size: 70px; font-weight: 700; line-height: 100%; text-align: center; background: #005fff; border-radius: 11px; padding: 13px 0px; margin: 124px 0 40px; color: #fff; text-transform: uppercase; }
  .activities section { background: linear-gradient(to bottom, #0063ff, #00f0ff); color: #fff; padding: 35px 20px; }
  .activities section h2 { font-weight: 700; font-size: 40px; line-height: 100%; margin-bottom: 30px; }
@@ -219,3 +224,11 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .activities section a { display: block; color: #fff; text-align: center; text-transform: uppercase; width: 200px; height: 68px; line-height: 68px; background: #2cd18b; border-radius: 10px; font-weight: 700; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
  .activities section a:hover { filter: contrast(1.3); }
  .activities section a { box-shadow: -4px 7px 16px 1px #1a1a1a30; }
+
+ /* questions */
+ .question section { color: #fff; margin-bottom: 40px;}
+ .question section h2 { font-size: 40px; line-height: 116%; margin-bottom: 20px; }
+ .question section p { margin-bottom: 10px; }
+ .question section input { margin-left: 25px; margin-bottom: 10px; }
+ .question form button { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; border: none; transition: .6s;}
+ .question form button:hover { opacity: .7; }

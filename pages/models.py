@@ -19,7 +19,7 @@ class Level(models.Model):
 
 class Lesson(models.Model):
     title = models.CharField(max_length=50)
-    description = models.TextField()
+    description = RichTextField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -52,6 +52,20 @@ class Activity(models.Model):
     class Meta:
         verbose_name = 'activity'
         verbose_name_plural = 'activities'
+
+
+class SubmittedActivity(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    submitted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_submitted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.submitted_by)+' - '+str(self.activity)
+
+    class Meta:
+        verbose_name = 'SubmittedActivity'
+        verbose_name_plural = 'SubmittedActivities'
+        unique_together = ('activity', 'submitted_by',)
 
 
 class Question(models.Model):
