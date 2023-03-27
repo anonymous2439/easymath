@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="lesson_manage" class="lesson_manage">
+
+        <div class="wrapper">
+            <div class="lessons_tbl">
+                <a href="{% url 'lesson_add' %}">Add</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Level</th>
+                            <th>Date Created</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lesson in lessons %}
+                            <tr>
+                                <td><a href="#!">{{ lesson.title }}</a></td>
+                                <td>{{ lesson.level }}</td>
+                                <td>{{ lesson.date_created }}</td>
+                                <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}">Edit</a> | <a href="{% url 'lesson_delete' lesson_id=lesson.pk %}">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock content%}

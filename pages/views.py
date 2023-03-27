@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count, Q
+from django.forms import formset_factory
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from .forms import LoginForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import LoginForm, LessonForm, ActivityForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity
 from django.utils.safestring import mark_safe
 
@@ -22,6 +24,7 @@ def intro_view(request):
     return render(request, template, {"is_intro": True})
 
 
+@login_required
 def home_view(request):
     template = 'pages/home.html'
     user = request.user
@@ -64,6 +67,9 @@ def level_view(request):
 def lesson_view(request, level_id):
     template = 'pages/lesson.html'
     lessons = Level.objects.get(pk=level_id).lesson_set.all()
+    search_text = request.GET.get('s')
+    if search_text:
+        lessons = lessons.filter(title__icontains=search_text)
     context = {"lessons": lessons}
     return render(request, template, context)
 
@@ -95,6 +101,10 @@ def activity_view(request, lesson_id, difficulty):
     activities = Lesson.objects.get(pk=lesson_id).activity_set.filter(difficulty=difficulty).annotate(
         submitted=Count('submittedactivity', filter=Q(submittedactivity__submitted_by=user))
     )
+    search_text = request.GET.get('s')
+    if search_text:
+        activities = activities.filter(title__icontains=search_text)
+
     context = {'activities': activities, 'difficulty': difficulty}
     return render(request, template, context)
 
@@ -137,4 +147,58 @@ def question_view(request, activity_id):
     # ang reason ngano gipasa sad ang activity_id kay para inig submit sa activity later on, mahibaw an kung onsa nga activity ang gi submit
     context = {'questions': questions, 'activity_id': activity_id}
     return render(request, 'pages/question.html', context)
+
+
+def admin_view(request):
+    return render(request, 'pages/admin.html')
+
+
+def lesson_manage_view(request):
+    lessons = Lesson.objects.all()
+    context = {
+        'lessons': lessons,
+    }
+    return render(request, 'pages/lesson_manage.html', context)
+
+
+def lesson_add_view(request):
+    activity_form_set = formset_factory(ActivityForm)
+    if request.method == 'POST':
+        lesson_form = LessonForm(request.POST)
+        activity_formset = activity_form_set(request.POST)
+        if lesson_form.is_valid() and activity_formset.is_valid():
+            lesson = lesson_form.save()
+            for activity_form in activity_formset:
+                if activity_form.cleaned_data:
+                    activity = activity_form.save(commit=False)
+                    activity.lesson = lesson
+                    activity.save()
+            return redirect('lesson_manage')
+    else:
+        lesson_form = LessonForm()
+        activity_formset = activity_form_set()
+    context = {
+        'lesson_form': lesson_form,
+        'activity_formset': activity_formset,
+    }
+    return render(request, 'pages/lesson_add.html', context)
+
+
+def lesson_edit_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if request.method == 'POST':
+        lesson_form = LessonForm(request.POST, instance=lesson)
+        if lesson_form.is_valid():
+            lesson_form.save()
+            # Redirect to success page
+    else:
+        lesson_form = LessonForm(instance=lesson)
+    context = {'lesson_form': lesson_form, 'lesson': lesson}
+    return render(request, 'pages/lesson_edit.html', context)
+
+
+def lesson_delete(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    lesson.delete()
+    return redirect('lesson_manage')
 

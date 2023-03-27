@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="admin" class="admin">
+
+        <div class="wrapper">
+            <form class="easymath_form" method="post">
+                {% csrf_token %}
+                {{ lesson_form|safe }}
+                {{ lesson_form.media }}
+                <button type="submit">Save</button>
+            </form>
+        </div>
+
+    </div>
+{% endblock content%}

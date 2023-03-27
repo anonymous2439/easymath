@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+{{ activity_formset.media }}
+{% endblock head %}
+
+{% block content %}
+    <div id="lesson_add" class="lesson_add">
+
+        <div class="wrapper">
+            <form method="post" class="easymath_form">
+                {% csrf_token %}
+                {{ lesson_form }}
+                {{ activity_formset.management_form }}
+                {% for form in activity_formset.forms %}
+                    {{ form.as_p }}
+                    {{ form.description }}
+                    {{ form.id }}
+                {% endfor %}
+                <button type="button" class="add-form-row" id="add_activity">Add Activity</button>
+                <button type="button" class="delete-form-row" id="remove_activity">Remove Activity</button>
+                {{ lesson_form.media }}
+                <button type="submit">Add</button>
+            </form>
+
+
+        </div>
+
+    </div>
+{% endblock content%}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Get the activity formset element
+    var activityFormset = $('#id_activity_set-TOTAL_FORMS');
+
+    // Get the "Add Activity" button element
+    var addActivityBtn = $('#add_activity');
+
+    // Get the "Remove Activity" button element
+    var removeActivityBtn = $('#remove_activity');
+
+    // Set the initial count of activity forms
+    var activityCount = activityFormset.val();
+
+    // Hide the "Remove Activity" button on page load
+    removeActivityBtn.hide();
+
+    // Add event listener for "Add Activity" button
+    addActivityBtn.click(function() {
+        // Get the activity formset element again in case it has changed
+        activityFormset = $('#id_activity_set-TOTAL_FORMS');
+
+        // Increment the activity count and update the formset value
+        activityCount++;
+        activityFormset.val(activityCount);
+
+        // Clone the last activity form and update its index
+        var lastActivityForm = $('.activity-form:last');
+        var newActivityForm = lastActivityForm.clone();
+        var newIndex = activityCount - 1;
+        newActivityForm.find(':input').each(function() {
+            var input = $(this);
+            var name = input.attr('name').replace('-' + (activityCount - 2) + '-', '-' + newIndex + '-');
+            input.attr('name', name);
+            input.val('');
+        });
+
+        // Insert the new activity form after the last form and show the "Remove Activity" button
+        lastActivityForm.after(newActivityForm);
+        removeActivityBtn.show();
+    });
+
+    // Add event listener for "Remove Activity" button
+    removeActivityBtn.click(function() {
+        // Get the activity formset element again in case it has changed
+        activityFormset = $('#id_activity_set-TOTAL_FORMS');
+
+        // Decrement the activity count and update the formset value
+        activityCount--;
+        activityFormset.val(activityCount);
+
+        // Remove the last activity form and hide the "Remove Activity" button if there is only one form left
+        $('.activity-form:last').remove();
+        if (activityCount === 1) {
+            removeActivityBtn.hide();
+        }
+    });
+});
+</script>
+{% endblock %}

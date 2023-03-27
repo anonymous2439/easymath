@@ -13,4 +13,9 @@ urlpatterns = [
     path('activity/<int:lesson_id>/', views.difficulty_view, name='difficulty'),
     path('activity/<int:lesson_id>/<str:difficulty>/', views.activity_view, name='activity'),
     path('question/<int:activity_id>/', views.question_view, name='question'),
+    path('user/admin', views.admin_view, name='admin'),
+    path('lessons/manage', views.lesson_manage_view, name='lesson_manage'),
+    path('lessons/add', views.lesson_add_view, name='lesson_add'),
+    path('lesson/edit/<int:lesson_id>', views.lesson_edit_view, name='lesson_edit'),
+    path('lesson/delete/<int:lesson_id>', views.lesson_delete, name='lesson_delete'),
 ]

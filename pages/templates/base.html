@@ -24,6 +24,7 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'admin' %}">Admin</a></li>
                     <li><a href="{% url 'level' %}">Lesson</a></li>
                 </ul>
             </nav>
@@ -34,6 +35,6 @@
         {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {% block scripts %}{% endblock scripts %}
+    {% block scripts %} {% endblock%}
 </body>
 </html>

@@ -187,13 +187,13 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .left_nav nav a { color: #fff; display: block; line-height: 100px; }
 .nav_footer a { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; }
 
-.lesson_header_con { padding: 20px 30px; }
-.lesson_header form { float: left; }
-.lesson_header form input { background: #003287; width: 100%; color: #fff; border: none; height: 37px; width: 210px; padding: 0 42px; border-radius: 100px; font-family:mada;font-size:16px;}
-.lesson_user h2 { font-size: 16px; font-weight: 700; float: right; }
+ .content_header { border-bottom: 1px solid #fff; }
+.content_header_con { padding: 20px 30px; }
+.content_header form { float: left; }
+.content_header form input { background: #003287; width: 100%; color: #fff; border: none; height: 37px; width: 210px; padding: 0 42px; border-radius: 100px; font-family:mada;font-size:16px;}
+.content_user h2 { font-size: 16px; font-weight: 700; float: right; color:#fff;}
 
 .back_btn a { font-size: 18px; font-weight: 700; background: #2cd18b; width: 93px; height: 43px; line-height: 43px; display:block; text-align: center; color: #fff; border-radius: 7px; }
- .lesson_header { border-bottom: 1px solid #fff; }
  .lesson_content { padding: 40px 0 0; }
  .lesson_title { font-size: 70px; font-weight: 700; line-height: 100%; text-align: center; background: #005fff; border-radius: 11px; padding: 13px 0px; margin: 27px 0 40px; }
  .lesson_main { background: #005fff; padding: 48px 55px; border-radius: 20px; }
@@ -232,3 +232,8 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .question section input { margin-left: 25px; margin-bottom: 10px; }
  .question form button { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; border: none; transition: .6s;}
  .question form button:hover { opacity: .7; }
+
+ /* form */
+  .easymath_form { background: #172b4d;display: flex; justify-content: space-between; flex-wrap: wrap; }
+ .easymath_form label, .easymath_form input { width: 100%; }
+ .easymath_form button { color: #fff; text-decoration: none; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; border: none; padding: 0 48px; display: block; }

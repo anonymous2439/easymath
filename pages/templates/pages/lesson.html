@@ -9,13 +9,13 @@
     <div id="lesson" class="lesson">
 
         <div class="wrapper">
-            <div class="lesson_header">
-                <div class="lesson_header_con">
+            <div class="content_header">
+                <div class="content_header_con">
                     <form>
-                        <input placeholder="Search questions…" />
+                        <input placeholder="Search lessons…" name="s" />
                     </form>
-                    <div class="lesson_user">
-                        <h2>Welcome, Dummy Name</h2>
+                    <div class="content_user">
+                        <h2>Logged in as: {{ request.user }}</h2>
                         <a href="#!"></a>
                     </div>
                     <div class="clearfix"></div>
