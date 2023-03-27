@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="user_manage" class="user_manage">
+
+        <div class="wrapper">
+            <div class="user_tbl">
+                <a href="{% url 'user_add' %}">Add</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Administrator</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td><a href="#!">{{ user.username }}</a></td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.is_admin }}</td>
+                                <td><a href="{% url 'user_edit' user_id=user.pk %}">Edit</a> | <a href="{% url 'user_delete' user_id=user.pk %}">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock content%}

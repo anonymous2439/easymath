@@ -4,8 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count, Q
 from django.forms import formset_factory
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
+
+from accounts.models import User
 from .forms import LoginForm, LessonForm, ActivityForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity
 from django.utils.safestring import mark_safe
@@ -17,6 +19,15 @@ difficulties = (
 )
 
 ACTIVITY_CONSTRAINT_ERROR = 'You already have submitted this activity'
+USER_ADD_SUCCESS = 'User added successfully'
+USER_EDIT_SUCCESS = 'User has been updated'
+USER_DELETE_SUCCESS = 'User has been deleted'
+
+
+def validate_is_admin(user):
+    if not user.is_admin:
+        # User is not an admin, return a 403 Forbidden response
+        return HttpResponseForbidden("You do not have permission to access this page.")
 
 
 def intro_view(request):
@@ -55,6 +66,58 @@ def login_user_view(request):
         login_form = LoginForm()
         # GI FLAG LANG NI AS "is_intro" PARA DILI MU SHOW ANG LEFT NAV SA LOGIN PAGE
     return render(request, template, {"login_form": login_form, "is_intro": True})
+
+
+from .forms import UserForm
+
+def user_manage(request):
+    users = User.objects.all()
+    context = {'users': users}
+    template = 'pages/user_manage.html'
+    return render(request, template, context)
+
+
+def user_add_view(request):
+    template = 'pages/user_add.html'
+
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, USER_ADD_SUCCESS)
+            return redirect('user_manage')
+    else:
+        user_form = UserForm()
+
+    context = {
+        'user_form': user_form,
+    }
+
+    return render(request, template, context)
+
+
+def user_edit_view(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, USER_EDIT_SUCCESS)
+            return redirect('user_manage')
+    else:
+        user_form = UserForm(instance=user)
+
+    template = 'pages/user_edit.html'
+    context = {'user_form': user_form, 'user': user}
+    return render(request, template, context)
+
+
+def user_delete(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user.delete()
+    messages.success(request, USER_DELETE_SUCCESS)
+    return redirect('user_manage')
 
 
 def level_view(request):
@@ -150,6 +213,9 @@ def question_view(request, activity_id):
 
 
 def admin_view(request):
+    if not request.user.is_admin:
+        # User is not an admin, return a 403 Forbidden response
+        return HttpResponseForbidden("You do not have permission to access this page.")
     return render(request, 'pages/admin.html')
 
 

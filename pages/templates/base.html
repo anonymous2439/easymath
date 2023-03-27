@@ -23,8 +23,10 @@
             <div class="main_logo"><a href="{% url 'home' %}"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
             <nav>
                 <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'home' %}">Dashboard</a></li>
+                    {% if user.is_admin %}
                     <li><a href="{% url 'admin' %}">Admin</a></li>
+                    {% endif %}
                     <li><a href="{% url 'level' %}">Lesson</a></li>
                 </ul>
             </nav>

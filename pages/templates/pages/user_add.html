@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="user_add" class="user_add">
+
+        <div class="wrapper">
+            <form method="post" class="easymath_form">
+                {% csrf_token %}
+                {{ user_form|safe }}
+                <button type="submit">Add</button>
+            </form>
+
+
+        </div>
+
+    </div>
+{% endblock content%}
+
