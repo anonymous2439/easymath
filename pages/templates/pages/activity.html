@@ -5,22 +5,16 @@
 
 {% endblock head %}
 
+{% block header %}
+<form>
+    <input placeholder="Search activities…" name="s" />
+</form>
+{% endblock %}
+
 {% block content %}
     <div id="activity" class="activity">
 
         <div class="wrapper">
-            <div class="content_header">
-                <div class="content_header_con">
-                    <form>
-                        <input placeholder="Search activities…" name="s" />
-                    </form>
-                    <div class="content_user">
-                        <h2>Logged in as: {{ request.user }}</h2>
-                        <a href="#!"></a>
-                    </div>
-                    <div class="clearfix"></div>
-               </div>
-            </div>
             <div class="activity_con">
                 <h2 class="activity_title">{{ difficulty }} mode</h2>
                 <div class="activities">

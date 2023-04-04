@@ -180,7 +180,7 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
  .level_con section a:hover { opacity: .7; }
 
 /* lesson */
-.lesson{background: #0a49b3; color: #fff;position: fixed;left: 0;right: 0;top: 0;  height: 100%;}
+.lesson{background: #0a49b3; color: #fff;  height: 100%;}
 .lesson .wrapper { max-width: 1306px; margin: 0 auto 0 319px; }
 .left_nav { background: #172b4d; position: fixed; left: 0; top: 0; padding: 31px 18px 10px; height: 100%; z-index:1;}
  .left_nav .main_logo { width: 215px; margin-bottom: 49px; }
@@ -191,7 +191,7 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
 .content_header_con { padding: 20px 30px; }
 .content_header form { float: left; }
 .content_header form input { background: #003287; width: 100%; color: #fff; border: none; height: 37px; width: 210px; padding: 0 42px; border-radius: 100px; font-family:mada;font-size:16px;}
-.content_user h2 { font-size: 16px; font-weight: 700; float: right; color:#fff;}
+.content_user { font-size: 16px; font-weight: 700; float: right; color:#fff; display:flex;column-gap: 10px;}
 
 .back_btn a { font-size: 18px; font-weight: 700; background: #2cd18b; width: 93px; height: 43px; line-height: 43px; display:block; text-align: center; color: #fff; border-radius: 7px; }
  .lesson_content { padding: 40px 0 0; }

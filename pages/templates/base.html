@@ -15,6 +15,24 @@
     {% block head %}{% endblock head %}
 </head>
 <body>
+    <div class="wrapper">
+<!--        HEADER BLOCK           -->
+        {% if is_intro is None or not is_intro %}
+        <div class="content_header">
+            <div class="content_header_con">
+                <div>
+                    {% block header %}{% endblock header %}
+                </div>
+                <div class="content_user">
+                    <a href="{% url 'logout' %}">Logout</a> |
+                    <h2>Logged in as: {{ request.user }}</h2>
+                    <a href="#!"></a>
+                </div>
+                <div class="clearfix"></div>
+           </div>
+        </div>
+        {% endif %}
+    </div>
     {% block content %}{% endblock content %}
 
     <!-- SHOW THE LEFT NAV IF THE PAGE IS NOT INTRO PAGE -->

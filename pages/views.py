@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count, Q
@@ -35,8 +35,9 @@ def intro_view(request):
     return render(request, template, {"is_intro": True})
 
 
-@login_required
 def home_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     template = 'pages/home.html'
     user = request.user
     activities_submitted = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
@@ -47,6 +48,11 @@ def home_view(request):
         'total_answered_questions': total_answered_questions,
     }
     return render(request, template, context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 def login_user_view(request):
