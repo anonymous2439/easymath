@@ -234,30 +234,59 @@ def lesson_manage_view(request):
 
 
 def lesson_add_view(request):
-    activity_form_set = formset_factory(ActivityForm)
+    lesson = None
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST)
-        activity_formset = activity_form_set(request.POST)
-        if lesson_form.is_valid() and activity_formset.is_valid():
+        if lesson_form.is_valid():
             lesson = lesson_form.save()
-            for activity_form in activity_formset:
-                if activity_form.cleaned_data:
-                    activity = activity_form.save(commit=False)
-                    activity.lesson = lesson
-                    activity.save()
-            return redirect('lesson_manage')
+        else:
+            messages.error(request, lesson_form.errors)
     else:
         lesson_form = LessonForm()
-        activity_formset = activity_form_set()
     context = {
         'lesson_form': lesson_form,
-        'activity_formset': activity_formset,
     }
+    if lesson is not None:
+        context['lesson'] = lesson
     return render(request, 'pages/lesson_add.html', context)
+
+
+def activity_add_view(request, lesson_id):
+    lesson = Lesson.objects.get(pk=lesson_id)
+    if request.method == 'POST':
+        activity_form = ActivityForm(request.POST)
+        if activity_form.is_valid():
+            activity = activity_form.save(commit=False)
+            activity.lesson = lesson
+            activity.save()
+            return redirect('lesson_edit', lesson_id=lesson_id)
+        else:
+            messages.error(request, activity_form.errors)
+    else:
+        activity_form = ActivityForm()
+    context = {
+        'activity_form': activity_form,
+        'lesson': lesson,
+    }
+    return render(request, 'pages/activity_add.html', context)
+
+
+def activity_edit_view(request, activity_id):
+    activity = Activity.objects.get(pk=activity_id)
+    if request.method == 'POST':
+        activity_form = ActivityForm(request.POST, instance=activity)
+        if activity_form.is_valid():
+            activity_form.save()
+            # Redirect to success page
+    else:
+        activity_form = ActivityForm(instance=activity)
+    context = {'activity_form': activity_form, 'activity': activity}
+    return render(request, 'pages/activity_edit.html', context)
 
 
 def lesson_edit_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
+    activities = lesson.activity_set.all()
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST, instance=lesson)
         if lesson_form.is_valid():
@@ -265,7 +294,7 @@ def lesson_edit_view(request, lesson_id):
             # Redirect to success page
     else:
         lesson_form = LessonForm(instance=lesson)
-    context = {'lesson_form': lesson_form, 'lesson': lesson}
+    context = {'lesson_form': lesson_form, 'lesson': lesson, 'activities': activities,}
     return render(request, 'pages/lesson_edit.html', context)
 
 

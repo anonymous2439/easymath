@@ -20,7 +20,7 @@ class LessonForm(forms.ModelForm):
 
 
 class ActivityForm(forms.ModelForm):
-    description = RichTextField()
+    description = forms.CharField(widget=CKEditorWidget())
 
     class Meta:
         model = Activity

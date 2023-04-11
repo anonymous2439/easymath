@@ -2,20 +2,47 @@
 {% load static %}
 
 {% block head %}
-
+{{ activity_formset.media }}
 {% endblock head %}
 
 {% block content %}
-    <div id="admin" class="admin">
-
+    <div id="lesson_edit" class="lesson_edit">
         <div class="wrapper">
-            <form class="easymath_form" method="post">
+
+            <form method="post" class="easymath_form">
                 {% csrf_token %}
-                {{ lesson_form|safe }}
+                <div id="lesson-form">
+                    <div class="form_header">
+                        <h2>Edit Lesson ({{ lesson }})</h2>
+                    </div>
+                    {{ lesson_form.as_p }}
+                </div>
+
+                <div class="activity-list">
+                    <h3>Activities</h3>
+                    <ul>
+                        {% for activity in activities %}
+                            <li><a href="{% url 'activity_edit' activity_id=activity.pk %}">{{ activity }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="form_footer">
+                    <div class="activity-btn">
+                        {% if lesson is not None %}
+                        <a class="add-form-row add_activity" href="{% url 'activity_add' lesson_id=lesson.pk %}">Add Activity</a>
+                        {% endif %}
+                        <button type="submit">Save</button>
+                    </div>
+                </div>
+
                 {{ lesson_form.media }}
-                <button type="submit">Save</button>
+
             </form>
         </div>
-
     </div>
 {% endblock content%}
+
+{% block scripts %}
+
+{% endblock %}

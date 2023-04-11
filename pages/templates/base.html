@@ -15,6 +15,20 @@
     {% block head %}{% endblock head %}
 </head>
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <div class="alert_con">
+                    {% if message.tags == "error" %}
+                        <h2>Error</h2>
+                    {% elif message.tags == "success" %}
+                        <h2>Success</h2>
+                    {% endif %}
+                    <p>{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="wrapper">
 <!--        HEADER BLOCK           -->
         {% if is_intro is None or not is_intro %}
@@ -55,6 +69,11 @@
         {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('.alert').click(function() {
+          $(this).hide();
+        });
+    </script>
     {% block scripts %} {% endblock%}
 </body>
 </html>
