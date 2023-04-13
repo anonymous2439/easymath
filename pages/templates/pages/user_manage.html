@@ -6,11 +6,13 @@
 {% endblock head %}
 
 {% block content %}
-    <div id="user_manage" class="user_manage">
+    <div id="user_manage" class="user_manage content_body">
 
         <div class="wrapper">
             <div class="user_tbl">
-                <a href="{% url 'user_add' %}">Add</a>
+                <div class="tbl_functions">
+                    <a href="{% url 'user_add' %}">+</a>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -26,7 +28,7 @@
                                 <td><a href="#!">{{ user.username }}</a></td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.is_admin }}</td>
-                                <td><a href="{% url 'user_edit' user_id=user.pk %}">Edit</a> | <a href="{% url 'user_delete' user_id=user.pk %}">Delete</a></td>
+                                <td><a href="{% url 'user_edit' user_id=user.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'user_delete' user_id=user.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

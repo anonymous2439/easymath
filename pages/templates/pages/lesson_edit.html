@@ -6,19 +6,19 @@
 {% endblock head %}
 
 {% block content %}
-    <div id="lesson_edit" class="lesson_edit">
+    <div id="lesson_edit" class="lesson_edit content_body">
         <div class="wrapper">
 
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="lesson-form">
                     <div class="form_header">
-                        <h2>Edit Lesson ({{ lesson }})</h2>
+                        <h2>Edit Lesson</h2>
                     </div>
                     {{ lesson_form.as_p }}
                 </div>
 
-                <div class="activity-list">
+                <div class="activity-list list">
                     <h3>Activities</h3>
                     <ul>
                         {% for activity in activities %}
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="form_footer">
-                    <div class="activity-btn">
+                    <div class="form_footer_btn">
                         {% if lesson is not None %}
                         <a class="add-form-row add_activity" href="{% url 'activity_add' lesson_id=lesson.pk %}">Add Activity</a>
                         {% endif %}

@@ -6,9 +6,12 @@
 {% endblock head %}
 
 {% block content %}
-    <div id="difficulty" class="difficulty">
+    <div id="difficulty" class="difficulty content_body">
         <div class="wrapper">
             <div class="difficulty_con">
+                <div class="back_btn">
+                    <a href="{% url 'lesson_single' lesson_id=lesson_id %}">Go Back</a>
+                </div>
                 <h2 class="difficulty_title">DIFFICULTY</h2>
                 <ul>
                     {% for key, value in difficulties %}

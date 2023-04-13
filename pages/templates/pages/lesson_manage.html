@@ -6,11 +6,13 @@
 {% endblock head %}
 
 {% block content %}
-    <div id="lesson_manage" class="lesson_manage">
+    <div id="lesson_manage" class="lesson_manage content_body">
 
         <div class="wrapper">
             <div class="lessons_tbl">
-                <a href="{% url 'lesson_add' %}">Add</a>
+                <div class="tbl_functions">
+                    <a href="{% url 'lesson_add' %}">+</a>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -26,7 +28,7 @@
                                 <td><a href="#!">{{ lesson.title }}</a></td>
                                 <td>{{ lesson.level }}</td>
                                 <td>{{ lesson.date_created }}</td>
-                                <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}">Edit</a> | <a href="{% url 'lesson_delete' lesson_id=lesson.pk %}">Delete</a></td>
+                                <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'lesson_delete' lesson_id=lesson.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -36,3 +38,7 @@
 
     </div>
 {% endblock content%}
+
+{% block scripts %}
+
+{% endblock %}

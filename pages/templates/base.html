@@ -11,24 +11,12 @@
     <style>
         body{height:100%;background:#0a49b3;}
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% endif %}
     {% block head %}{% endblock head %}
 </head>
 <body>
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                <div class="alert_con">
-                    {% if message.tags == "error" %}
-                        <h2>Error</h2>
-                    {% elif message.tags == "success" %}
-                        <h2>Success</h2>
-                    {% endif %}
-                    <p>{{ message }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
+
     <div class="wrapper">
 <!--        HEADER BLOCK           -->
         {% if is_intro is None or not is_intro %}
@@ -73,6 +61,28 @@
         $('.alert').click(function() {
           $(this).hide();
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                Swal.fire({
+                  title: 'Error!',
+                  text: '{{ message }}',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                })
+            {% elif message.tags == "success" %}
+                Swal.fire({
+                  title: 'Success!',
+                  text: '{{ message }}',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                })
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     </script>
     {% block scripts %} {% endblock%}
 </body>

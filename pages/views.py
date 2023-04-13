@@ -8,8 +8,8 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import User
-from .forms import LoginForm, LessonForm, ActivityForm
-from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity
+from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm
+from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
 
 difficulties = (
@@ -89,7 +89,7 @@ def user_add_view(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             messages.success(request, USER_ADD_SUCCESS)
             return redirect('user_manage')
     else:
@@ -174,7 +174,7 @@ def activity_view(request, lesson_id, difficulty):
     if search_text:
         activities = activities.filter(title__icontains=search_text)
 
-    context = {'activities': activities, 'difficulty': difficulty}
+    context = {'activities': activities, 'difficulty': difficulty, 'lesson_id': lesson_id}
     return render(request, template, context)
 
 
@@ -218,6 +218,77 @@ def question_view(request, activity_id):
     return render(request, 'pages/question.html', context)
 
 
+def question_add_view(request, activity_id):
+    activity = Activity.objects.get(pk=activity_id)
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST)
+        if question_form.is_valid():
+            question = question_form.save(commit=False)
+            question.activity = activity
+            question.save()
+            messages.success(request, 'New Question Added!')
+            return redirect('activity_edit', activity_id=activity_id)
+        else:
+            messages.error(request, question_form.errors)
+    else:
+        question_form = QuestionForm()
+    context = {
+        'question_form': question_form,
+        'activity': activity,
+    }
+    return render(request, 'pages/question_add.html', context)
+
+
+def question_edit_view(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    answers = question.answer_set.all()
+    if request.method == 'POST':
+        question_form = QuestionForm(request.POST, instance=question)
+        if question_form.is_valid():
+            question_form.save()
+            messages.success(request, 'Question Saved!')
+            return redirect('activity_edit', activity_id=question.activity.pk)
+    else:
+        question_form = QuestionForm(instance=question)
+    context = {'question_form': question_form, 'question': question, 'answers': answers}
+    return render(request, 'pages/question_edit.html', context)
+
+
+def answer_add_view(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    if request.method == 'POST':
+        answer_form = AnswerForm(request.POST)
+        if answer_form.is_valid():
+            answer = answer_form.save(commit=False)
+            answer.question = question
+            answer.save()
+            messages.success(request, 'New Answer Added!')
+            return redirect('question_edit', question_id=question_id)
+        else:
+            messages.error(request, answer_form.errors)
+    else:
+        answer_form = AnswerForm()
+    context = {
+        'answer_form': answer_form,
+        'question': question,
+    }
+    return render(request, 'pages/answer_add.html', context)
+
+
+def answer_edit_view(request, answer_id):
+    answer = Answer.objects.get(pk=answer_id)
+    if request.method == 'POST':
+        answer_form = AnswerForm(request.POST, instance=answer)
+        if answer_form.is_valid():
+            answer_form.save()
+            messages.success(request, 'Answer Saved!')
+            return redirect('question_edit', question_id=answer.question.pk)
+    else:
+        answer_form = AnswerForm(instance=answer)
+    context = {'answer_form': answer_form, 'answer': answer}
+    return render(request, 'pages/answer_edit.html', context)
+
+
 def admin_view(request):
     if not request.user.is_admin:
         # User is not an admin, return a 403 Forbidden response
@@ -238,7 +309,9 @@ def lesson_add_view(request):
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST)
         if lesson_form.is_valid():
-            lesson = lesson_form.save()
+            lesson_form.save()
+            messages.success(request, 'New Lesson Added')
+            return redirect('lesson_manage')
         else:
             messages.error(request, lesson_form.errors)
     else:
@@ -259,6 +332,7 @@ def activity_add_view(request, lesson_id):
             activity = activity_form.save(commit=False)
             activity.lesson = lesson
             activity.save()
+            messages.success(request, 'New Activity Added')
             return redirect('lesson_edit', lesson_id=lesson_id)
         else:
             messages.error(request, activity_form.errors)
@@ -273,14 +347,16 @@ def activity_add_view(request, lesson_id):
 
 def activity_edit_view(request, activity_id):
     activity = Activity.objects.get(pk=activity_id)
+    questions = activity.question_set.all()
     if request.method == 'POST':
         activity_form = ActivityForm(request.POST, instance=activity)
         if activity_form.is_valid():
             activity_form.save()
-            # Redirect to success page
+            messages.success(request, 'Activity Saved')
+            return redirect('lesson_edit', lesson_id=activity.lesson.pk)
     else:
         activity_form = ActivityForm(instance=activity)
-    context = {'activity_form': activity_form, 'activity': activity}
+    context = {'activity_form': activity_form, 'activity': activity, 'questions': questions}
     return render(request, 'pages/activity_edit.html', context)
 
 
@@ -291,7 +367,8 @@ def lesson_edit_view(request, lesson_id):
         lesson_form = LessonForm(request.POST, instance=lesson)
         if lesson_form.is_valid():
             lesson_form.save()
-            # Redirect to success page
+            messages.success(request, 'Lesson Saved!')
+            return redirect('lesson_manage')
     else:
         lesson_form = LessonForm(instance=lesson)
     context = {'lesson_form': lesson_form, 'lesson': lesson, 'activities': activities,}
@@ -301,5 +378,6 @@ def lesson_edit_view(request, lesson_id):
 def lesson_delete(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     lesson.delete()
+    messages.success(request, 'Lesson Deleted!')
     return redirect('lesson_manage')
 

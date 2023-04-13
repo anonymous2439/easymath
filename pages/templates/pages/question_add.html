@@ -2,27 +2,27 @@
 {% load static %}
 
 {% block head %}
-{{ activity_formset.media }}
+{{ question_formset.media }}
 {% endblock head %}
 
 {% block content %}
-    <div id="activity_add" class="activity_add content_body">
+    <div id="question_add" class="question_add content_body">
         <div class="wrapper">
 
             <form method="post" class="easymath_form">
                 {% csrf_token %}
-                <div id="activity-form">
-                    <div class="form_header"><h2>New Activity ({{ lesson }})</h2></div>
-                    {{ activity_form.as_p }}
+                <div id="question-form">
+                    <div class="form_header"><h2>New Question ({{ activity }})</h2></div>
+                    {{ question_form.as_p }}
                 </div>
 
-                <div class="form_header form_header_activities">
+                <div class="form_header form_header_questions">
                     <div class="activity-btn">
                         <button type="submit">Save</button>
                     </div>
                 </div>
 
-                {{ activity_form.media }}
+                {{ question_form.media }}
 
             </form>
         </div>

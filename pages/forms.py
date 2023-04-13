@@ -3,7 +3,7 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 
 from accounts.models import User
-from pages.models import Lesson, Activity
+from pages.models import Lesson, Activity, Question, Answer
 
 
 class LoginForm(forms.Form):
@@ -25,6 +25,20 @@ class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = ['title', 'description', 'difficulty']
+
+
+class QuestionForm(forms.ModelForm):
+
+    class Meta:
+        model = Question
+        fields = ['name']
+
+
+class AnswerForm(forms.ModelForm):
+
+    class Meta:
+        model = Answer
+        fields = ['name', 'is_correct']
 
 
 class UserForm(forms.ModelForm):

@@ -6,20 +6,32 @@
 {% endblock head %}
 
 {% block content %}
-    <div id="activity_edit" class="activity_edit">
+    <div id="activity_edit" class="activity_edit content_body">
         <div class="wrapper">
 
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="activity-form">
                     <div class="form_header">
-                        <h2>Edit Activity ({{ activity }})</h2>
+                        <h2>Edit Activity</h2>
                     </div>
                     {{ activity_form.as_p }}
                 </div>
 
+                <div class="question-list list">
+                    <h3>Questions</h3>
+                    <ul>
+                        {% for question in questions %}
+                            <li><a href="{% url 'question_edit' question_id=question.pk %}">{{ question|safe }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                 <div class="form_footer">
-                    <div class="activity-btn">
+                    <div class="form_footer_btn">
+                        {% if activity is not None %}
+                        <a class="add-form-row add_question" href="{% url 'question_add' activity_id=activity.pk %}">Add Question</a>
+                        {% endif %}
                         <button type="submit">Save</button>
                     </div>
                 </div>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+{{ activity_formset.media }}
+{% endblock head %}
+
+{% block content %}
+    <div id="question_edit" class="question_edit content_body">
+        <div class="wrapper">
+
+            <form method="post" class="easymath_form">
+                {% csrf_token %}
+                <div id="question-form">
+                    <div class="form_header">
+                        <h2>Edit Question</h2>
+                    </div>
+                    {{ question_form.as_p }}
+                </div>
+
+                <div class="answer-list list">
+                    <h3>Answers</h3>
+                    <ul>
+                        {% for answer in answers %}
+                            <li>
+                                <a href="{% url 'answer_edit' answer_id=answer.pk %}">
+                                {{ answer|safe }}
+                                {% if answer.is_correct %} - correct answer {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="form_footer">
+                    <div class="form_footer_btn">
+                        {% if question is not None %}
+                        <a class="add-form-row add_answer" href="{% url 'answer_add' question_id=question.pk %}">Add Answer</a>
+                        {% endif %}
+                        <button type="submit">Save</button>
+                    </div>
+                </div>
+
+                {{ question_form.media }}
+
+            </form>
+        </div>
+    </div>
+{% endblock content%}
+
+{% block scripts %}
+
+{% endblock %}

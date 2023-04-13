@@ -12,16 +12,19 @@
 {% endblock %}
 
 {% block content %}
-    <div id="activity" class="activity">
+    <div id="activity" class="activity content_body">
 
         <div class="wrapper">
             <div class="activity_con">
+                <div class="back_btn">
+                    <a href="{% url 'difficulty' lesson_id=lesson_id %}">Go Back</a>
+                </div>
                 <h2 class="activity_title">{{ difficulty }} mode</h2>
                 <div class="activities">
                     {% for activity in activities %}
                     <section>
                         <h2>{{ activity.title }}</h2>
-                        <p>{{ activity.description }}</p>
+                        <p>{{ activity.description|safe }}</p>
                         {% if activity.submitted > 0 %}
                         {% else %}
                         <a href="{% url 'question' activity_id=activity.pk %}">Play</a>
