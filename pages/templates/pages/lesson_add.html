@@ -8,7 +8,9 @@
 {% block content %}
     <div id="lesson_add" class="lesson_add content_body">
         <div class="wrapper">
-
+            <div class="back_btn">
+                <a href="{% url 'lesson_manage' %}">Go Back</a>
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="lesson-form">

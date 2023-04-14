@@ -227,7 +227,7 @@ def question_add_view(request, activity_id):
             question.activity = activity
             question.save()
             messages.success(request, 'New Question Added!')
-            return redirect('activity_edit', activity_id=activity_id)
+            return redirect('question_edit', question_id=question.pk)
         else:
             messages.error(request, question_form.errors)
     else:
@@ -252,6 +252,13 @@ def question_edit_view(request, question_id):
         question_form = QuestionForm(instance=question)
     context = {'question_form': question_form, 'question': question, 'answers': answers}
     return render(request, 'pages/question_edit.html', context)
+
+
+def question_delete(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    question.delete()
+    messages.success(request, 'Question Deleted!')
+    return redirect('activity_edit', activity_id=question.activity.pk)
 
 
 def answer_add_view(request, question_id):
@@ -289,6 +296,13 @@ def answer_edit_view(request, answer_id):
     return render(request, 'pages/answer_edit.html', context)
 
 
+def answer_delete(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    answer.delete()
+    messages.success(request, 'Answer Deleted!')
+    return redirect('question_edit', question_id=answer.question.pk)
+
+
 def admin_view(request):
     if not request.user.is_admin:
         # User is not an admin, return a 403 Forbidden response
@@ -309,9 +323,9 @@ def lesson_add_view(request):
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST)
         if lesson_form.is_valid():
-            lesson_form.save()
+            lesson = lesson_form.save()
             messages.success(request, 'New Lesson Added')
-            return redirect('lesson_manage')
+            return redirect('lesson_edit', lesson_id=lesson.pk)
         else:
             messages.error(request, lesson_form.errors)
     else:
@@ -333,7 +347,7 @@ def activity_add_view(request, lesson_id):
             activity.lesson = lesson
             activity.save()
             messages.success(request, 'New Activity Added')
-            return redirect('lesson_edit', lesson_id=lesson_id)
+            return redirect('activity_edit', activity_id=activity.pk)
         else:
             messages.error(request, activity_form.errors)
     else:
@@ -358,6 +372,13 @@ def activity_edit_view(request, activity_id):
         activity_form = ActivityForm(instance=activity)
     context = {'activity_form': activity_form, 'activity': activity, 'questions': questions}
     return render(request, 'pages/activity_edit.html', context)
+
+
+def activity_delete(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    activity.delete()
+    messages.success(request, 'Activity Deleted!')
+    return redirect('lesson_edit', lesson_id=activity.lesson.pk)
 
 
 def lesson_edit_view(request, lesson_id):

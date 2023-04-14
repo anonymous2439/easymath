@@ -12,6 +12,7 @@
         body{height:100%;background:#0a49b3;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
     {% endif %}
     {% block head %}{% endblock head %}
 </head>
@@ -57,12 +58,9 @@
         {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $('.alert').click(function() {
-          $(this).hide();
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<!--    MAOH NI MU SHOW SA ALERT MODAL-->
     <script>
     {% if messages %}
         {% for message in messages %}
@@ -83,6 +81,10 @@
             {% endif %}
         {% endfor %}
     {% endif %}
+    </script>
+<!--    MAOH NI ANG MU INITIALIZE SA DATA TABLES-->
+    <script>
+        let table = new DataTable('table');
     </script>
     {% block scripts %} {% endblock%}
 </body>

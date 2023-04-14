@@ -7,11 +7,13 @@
 {% block content %}
     <div id="answer_add" class="answer_add content_body">
         <div class="wrapper">
-
+            <div class="back_btn">
+                <a href="{% url 'question_edit' question_id=question.pk %}">Go Back</a>
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="answer-form">
-                    <div class="form_header"><h2>New Answer ({{ question|safe }})</h2></div>
+                    <div class="form_header"><h2>New Choice ({{ question|safe }})</h2></div>
                     {{ answer_form.as_p }}
                 </div>
 

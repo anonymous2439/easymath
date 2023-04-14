@@ -8,7 +8,9 @@
 {% block content %}
     <div id="activity_edit" class="activity_edit content_body">
         <div class="wrapper">
-
+            <div class="back_btn">
+                <a href="{% url 'lesson_edit' lesson_id=activity.lesson.pk %}">Go Back</a>
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="activity-form">
@@ -22,7 +24,7 @@
                     <h3>Questions</h3>
                     <ul>
                         {% for question in questions %}
-                            <li><a href="{% url 'question_edit' question_id=question.pk %}">{{ question|safe }}</a></li>
+                            <li><a href="{% url 'question_edit' question_id=question.pk %}">{{ question|safe }}</a> <div class="list-functions"><a href="{% url 'question_edit' question_id=question.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'question_delete' question_id=question.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></div></li>
                         {% endfor %}
                     </ul>
                 </div>

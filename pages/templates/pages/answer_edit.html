@@ -8,7 +8,9 @@
 {% block content %}
     <div id="answer_edit" class="answer_edit content_body">
         <div class="wrapper">
-
+            <div class="back_btn">
+                <a href="{% url 'question_edit' question_id=answer.question.pk %}">Go Back</a>
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="answer-form">

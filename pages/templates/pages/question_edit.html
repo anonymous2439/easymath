@@ -8,7 +8,9 @@
 {% block content %}
     <div id="question_edit" class="question_edit content_body">
         <div class="wrapper">
-
+            <div class="back_btn">
+                <a href="{% url 'activity_edit' activity_id=question.activity.pk %}">Go Back</a>
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="question-form">
@@ -19,14 +21,13 @@
                 </div>
 
                 <div class="answer-list list">
-                    <h3>Answers</h3>
+                    <h3>Choices</h3>
                     <ul>
                         {% for answer in answers %}
                             <li>
-                                <a href="{% url 'answer_edit' answer_id=answer.pk %}">
-                                {{ answer|safe }}
-                                {% if answer.is_correct %} - correct answer {% endif %}
-                                </a>
+
+                                    <a href="{% url 'answer_edit' answer_id=answer.pk %}">{{ answer|safe }} {% if answer.is_correct %} - <i class="fa-solid fa-check"></i> {% endif %}</a> <div class="list-functions"><a href="{% url 'answer_edit' answer_id=answer.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'answer_delete' answer_id=answer.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></div>
+
                             </li>
                         {% endfor %}
                     </ul>
@@ -35,7 +36,7 @@
                 <div class="form_footer">
                     <div class="form_footer_btn">
                         {% if question is not None %}
-                        <a class="add-form-row add_answer" href="{% url 'answer_add' question_id=question.pk %}">Add Answer</a>
+                        <a class="add-form-row add_answer" href="{% url 'answer_add' question_id=question.pk %}">Add Choice</a>
                         {% endif %}
                         <button type="submit">Save</button>
                     </div>
