@@ -292,6 +292,13 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
  .question section input { margin-left: 25px; margin-bottom: 10px; }
  .question form button { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; border: none; transition: .6s;}
  .question form button:hover { opacity: .7; }
+ .question section h2 p { display: inline; }
+
+ /* answers */
+ .answer_con { display: flex; align-items: center;margin-bottom: 15px; }
+ .answer_con input[type="radio"] { margin-right: 15px; min-height: 0; }
+ .correct_answer {background: #2cd18b;}
+ .wrong_answer{background:red;}
 
  /* form */
   .easymath_form { background: #172b4d;display: flex; justify-content: space-between; flex-wrap: wrap; }

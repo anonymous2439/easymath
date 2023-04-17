@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="activity_review" class="activity_review content_body">
+    <div class="wrapper">
+        <div class="activity_review_con">
+            {% for question_dict in questions %}
+            <div class="question">
+
+                    <section>
+                        <h2><span>{{ forloop.counter }}.</span> {{ question_dict.question.name|safe }}</h2>
+                        <p>choices:</p>
+                        {% for answer in question_dict.answers %}
+                            <div class="answer_con
+                            {% if answer.is_correct == True %}correct_answer{% endif %}
+                            {% if question_dict.user_answer and question_dict.user_answer.answer.pk == answer.pk and answer.is_correct == False %}wrong_answer{% endif %}">
+                                <input disabled type="radio" name="answer-{{ question_dict.question.pk }}" value="{{ answer.pk }}"
+                                    id="answer-{{ answer.pk }}" {% if question_dict.user_answer and question_dict.user_answer.answer.pk == answer.pk %}checked{% endif %}>
+                                <label for="answer-{{ answer.pk }}">{{ answer.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </section>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

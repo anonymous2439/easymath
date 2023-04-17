@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import User
-from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm
+from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
 
@@ -40,12 +40,33 @@ def home_view(request):
         return redirect('login')
     template = 'pages/home.html'
     user = request.user
-    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
-    score = UserAnswer.objects.filter(user=user, answer__is_correct=True, answer__question__activity__in=activities_submitted).count()
-    total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted).count()
+
+    # THIS MAKES SURE THAT ONLY THE STUDENTS WILL BE SHOWN ON THE TABLE
+    users = User.objects.exclude(is_admin=True)
+
+    activities_submitted_id = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
+    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
+    total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted_id).count()
+    score = {}
+    activity_scores = []
+
+    # STORE THE SCORES WHERE THE SCORE DICTIONARY ID IS THE ACTIVITY ID
+    for activity_submitted in activities_submitted:
+        correct_answer = UserAnswer.objects.filter(user=user, answer__is_correct=True, answer__question__activity=activity_submitted.activity).count()
+        total = activity_submitted.activity.question_set.count()
+        score = {
+            'correct_answer': correct_answer,
+            'total': total
+        }
+        activity_scores.append({
+            'activity': activity_submitted.activity,
+            'score': score
+        })
     context = {
-        'score': score,
+        'users': users,
         'total_answered_questions': total_answered_questions,
+        'activities_submitted': activities_submitted,
+        'activity_scores': activity_scores
     }
     return render(request, template, context)
 
@@ -74,7 +95,32 @@ def login_user_view(request):
     return render(request, template, {"login_form": login_form, "is_intro": True})
 
 
-from .forms import UserForm
+def user_profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+    template = 'pages/user_profile.html'
+    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
+    score = {}
+    activity_scores = []
+
+    # STORE THE SCORES WHERE THE SCORE DICTIONARY ID IS THE ACTIVITY ID
+    for activity_submitted in activities_submitted:
+        correct_answer = UserAnswer.objects.filter(user=user, answer__is_correct=True,
+                                                   answer__question__activity=activity_submitted.activity).count()
+        total = activity_submitted.activity.question_set.count()
+        score = {
+            'correct_answer': correct_answer,
+            'total': total
+        }
+        activity_scores.append({
+            'activity': activity_submitted.activity,
+            'score': score
+        })
+    context = {
+        'user': user,
+        'activity_scores': activity_scores
+    }
+    return render(request, template, context)
+
 
 def user_manage(request):
     users = User.objects.all()
@@ -178,6 +224,26 @@ def activity_view(request, lesson_id, difficulty):
     return render(request, template, context)
 
 
+def activity_review(request, user_id, activity_id):
+    # naa diri ang pag get sa question with their respective answers then ipasa dayon sa template
+    all_questions = Activity.objects.get(pk=activity_id).question_set.all()
+    user = User.objects.get(pk=user_id)
+    user_answers = UserAnswer.objects.filter(user=user)
+    questions = []
+    for question in all_questions:
+        question_dict = {'question': question, 'answers': question.answer_set.all()}
+        user_answer = user_answers.filter(answer__question=question).first()
+        if user_answer:
+            question_dict['user_answer'] = user_answer
+        questions.append(question_dict)
+    context = {
+        'questions': questions,
+        'user': user
+    }
+    template = 'pages/activity_review.html'
+    return render(request, template, context)
+
+
 def question_view(request, activity_id):
     # maoh ni ang mu handle sa pag click sa radio button para ma save sa user_answer table
     if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
@@ -199,6 +265,7 @@ def question_view(request, activity_id):
         try:
             SubmittedActivity.objects.create(activity=activity, submitted_by=submitted_by)
             messages.success(request, "Successfully submitted the activity")
+            return redirect('activity', lesson_id=activity.lesson.pk, difficulty=activity.difficulty)
         except IntegrityError:
             messages.error(request, ACTIVITY_CONSTRAINT_ERROR)
             pass

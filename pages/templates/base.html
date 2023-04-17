@@ -28,7 +28,7 @@
                 </div>
                 <div class="content_user">
                     <a href="{% url 'logout' %}">Logout</a> |
-                    <h2>Logged in as: {{ request.user }}</h2>
+                    <h2>Logged in as: <a href="{% url 'user_profile' user_id=request.user.pk %}">{{ request.user }}</a></h2>
                     <a href="#!"></a>
                 </div>
                 <div class="clearfix"></div>
@@ -45,7 +45,7 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home' %}">Dashboard</a></li>
-                    {% if user.is_admin %}
+                    {% if request.user.is_admin %}
                     <li><a href="{% url 'admin' %}">Admin</a></li>
                     {% endif %}
                     <li><a href="{% url 'level' %}">Lesson</a></li>
@@ -60,6 +60,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js" integrity="sha512-v3ygConQmvH0QehvQa6gSvTE2VdBZ6wkLOlmK7Mcy2mZ0ZF9saNbbk19QeaoTHdWIEiTlWmrwAL4hS8ElnGFbA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--    MAOH NI MU SHOW SA ALERT MODAL-->
     <script>
     {% if messages %}

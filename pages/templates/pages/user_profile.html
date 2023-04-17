@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="user_profile" class="user_profile content_body">
+
+        <div class="wrapper">
+            <h2 class="heading_title">User Profile</h2>
+            <div class="user_details">
+                <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
+                <p><span>Username: </span>{{ user.username }}</p>
+                <p><span>Email: </span>{{ user.email }}</p>
+                <p><span>Contact Number: </span>{{ user.contact_no }}</p>
+            </div>
+
+            <h2>Submitted Activities:</h2>
+            <ul>
+                {% for activity_score in activity_scores %}
+                <li><a href="{% url 'activity_review' user_id=user.pk activity_id=activity_score.activity.pk %}">{{ activity_score.activity }}</a> - ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% endblock content%}
