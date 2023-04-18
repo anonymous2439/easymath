@@ -41,9 +41,6 @@ def home_view(request):
     template = 'pages/home.html'
     user = request.user
 
-    # THIS MAKES SURE THAT ONLY THE STUDENTS WILL BE SHOWN ON THE TABLE
-    users = User.objects.exclude(is_admin=True)
-
     activities_submitted_id = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
     activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
     total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted_id).count()
@@ -63,7 +60,6 @@ def home_view(request):
             'score': score
         })
     context = {
-        'users': users,
         'total_answered_questions': total_answered_questions,
         'activities_submitted': activities_submitted,
         'activity_scores': activity_scores
@@ -206,7 +202,8 @@ def lesson_finished(request, lesson_id):
 
 def difficulty_view(request, lesson_id):
     template = 'pages/difficulty.html'
-    context = {"lesson_id": lesson_id, "difficulties": difficulties}
+    lesson = Lesson.objects.get(pk=lesson_id)
+    context = {"lesson": lesson, "difficulties": difficulties}
     return render(request, template, context)
 
 
@@ -281,7 +278,8 @@ def question_view(request, activity_id):
             question_dict['user_answer'] = user_answer
         questions.append(question_dict)
     # ang reason ngano gipasa sad ang activity_id kay para inig submit sa activity later on, mahibaw an kung onsa nga activity ang gi submit
-    context = {'questions': questions, 'activity_id': activity_id}
+    activity = Activity.objects.get(pk=activity_id)
+    context = {'questions': questions, 'activity': activity}
     return render(request, 'pages/question.html', context)
 
 

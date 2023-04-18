@@ -8,44 +8,13 @@
 
             <div class="home_con">
 
-                <p>Score: {{ score }}</p>
-                <p>Total Answered Questions: {{ total_answered_questions }}</p>
                 <h2>Submitted Activities:</h2>
 
                 <ul>
                     {% for activity_score in activity_scores %}
-                    <li><a href="#!">{{ activity_score.activity }}</a> - ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
+                    <li>{{ activity_score.activity }}- ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
                     {% endfor %}
                 </ul>
-
-                {% if request.user.is_admin %}
-                <div class="users_tbl">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th>
-                                <th>Contact No.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for user in users %}
-                                <tr>
-                                    <td><a href="{% url 'user_profile' user_id=user.pk %}">{{ user.username }}</a></td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user.first_name }}</td>
-                                    <td>{{ user.middle_name }}</td>
-                                    <td>{{ user.last_name }}</td>
-                                    <td>{{ user.contact_no }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% endif %}
 
             </div>
 

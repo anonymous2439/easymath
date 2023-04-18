@@ -9,11 +9,11 @@
     <div id="lesson" class="lesson content_body">
 
         <div class="wrapper">
-            <div class="lesson_content">
-                <div class="back_btn">
-                    <a href="{% url 'lesson' level_id=lesson.level.pk %}">Go Back</a>
+            <div>
+                <div class="breadcrumbs">
+                    <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=lesson.level.pk %}">{{ lesson.level.name }}</a> / {{ lesson.title }}
                 </div>
-                <div class="lesson_title">{{ lesson.title }}</div>
+                <div class="content_title">{{ lesson.title }}</div>
                 <div class="lesson_main">
                     {% if lesson %}
                         {{ lesson.description|safe }}

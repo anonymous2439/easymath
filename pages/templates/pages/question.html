@@ -30,6 +30,20 @@
                 }
             });
         });
+
+        /* smooth scrolling */
+        $('a[href*="#"]').on('click', function(e) {
+            var topOffset = (-50);
+            e.preventDefault();
+
+            $('html, body').animate(
+              {
+                scrollTop: $($(this).attr('href')).offset().top+topOffset,
+              },
+              500,
+              'linear'
+            );
+        });
     });
 </script>
 {% endblock scripts %}
@@ -39,8 +53,18 @@
 <div id="question" class="question content_body">
     <div class="wrapper">
         <div class="activity_con">
+            <div class="breadcrumbs">
+                <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=activity.lesson.level.pk %}">{{ activity.lesson.level.name }}</a> / <a href="{% url 'lesson_single' lesson_id=activity.lesson.pk %}">{{ activity.lesson.title }}</a> / <a href="{% url 'difficulty' lesson_id=activity.lesson.pk %}">Difficulty</a> / <a href="{% url 'activity' lesson_id=activity.lesson.pk difficulty=activity.difficulty %}">{{ activity.difficulty }}</a> / {{ activity.title }}
+            </div>
+            <div class="question_sidebar">
+                <ul>
+                    {% for question_dict in questions %}
+                    <li><a href="#question-{{ question_dict.question.pk }}">Question {{ forloop.counter }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% for question_dict in questions %}
-            <div class="question">
+            <div class="question" id="question-{{ question_dict.question.pk }}">
                 <form method="post">
                     {% csrf_token %}
                     <section>
@@ -60,7 +84,7 @@
             <div>
                 <form method="post">
                     {% csrf_token %}
-                    <input name="activity_id" value="{{ activity_id }}" hidden />
+                    <input name="activity_id" value="{{ activity.pk }}" hidden />
                     <button type="submit">Submit</button>
                 </form>
             </div>

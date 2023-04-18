@@ -9,13 +9,13 @@
     <div id="difficulty" class="difficulty content_body">
         <div class="wrapper">
             <div class="difficulty_con">
-                <div class="back_btn">
-                    <a href="{% url 'lesson_single' lesson_id=lesson_id %}">Go Back</a>
+                <div class="breadcrumbs">
+                    <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=lesson.level.pk %}">{{ lesson.level.name }}</a> / <a href="{% url 'lesson_single' lesson_id=lesson.pk %}">{{ lesson.title }}</a> / Difficulty
                 </div>
-                <h2 class="difficulty_title">DIFFICULTY</h2>
+                <div class="content_title">DIFFICULTY</div>
                 <ul>
                     {% for key, value in difficulties %}
-                    <li><a href="{% url 'activity' lesson_id=lesson_id difficulty=key %}">{{ value }}</a></li>
+                    <li><a href="{% url 'activity' lesson_id=lesson.pk difficulty=key %}">{{ value }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

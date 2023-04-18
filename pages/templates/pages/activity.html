@@ -16,10 +16,10 @@
 
         <div class="wrapper">
             <div class="activity_con">
-                <div class="back_btn">
-                    <a href="{% url 'difficulty' lesson_id=lesson_id %}">Go Back</a>
+                <div class="breadcrumbs">
+                    <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=activities.0.lesson.level.pk %}">{{ activities.0.lesson.level.name }}</a> / <a href="{% url 'lesson_single' lesson_id=activities.0.lesson.pk %}">{{ activities.0.lesson.title }}</a> / <a href="{% url 'difficulty' lesson_id=activities.0.lesson.pk %}">Difficulty</a> / {{ activities.0.difficulty }}
                 </div>
-                <h2 class="activity_title">{{ difficulty }} mode</h2>
+                <h2 class="content_title">{{ difficulty }} mode</h2>
                 <div class="activities">
                     {% for activity in activities %}
                     <section>

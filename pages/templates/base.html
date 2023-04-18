@@ -48,6 +48,7 @@
                     {% if request.user.is_admin %}
                     <li><a href="{% url 'admin' %}">Admin</a></li>
                     {% endif %}
+                    <li><a href="{% url 'user_profile' user_id=request.user.pk %}">Profile</a></li>
                     <li><a href="{% url 'level' %}">Lesson</a></li>
                 </ul>
             </nav>
