@@ -500,3 +500,51 @@ def retrieve_lesson(request, lesson_id):
     lesson.is_deleted = False
     lesson.save()
     return redirect('retrieve_lessons')
+
+
+def retrieve_activities_view(request):
+    template = 'pages/retrieve_activities.html'
+    activities = Activity.objects.filter(is_deleted=True)
+    context = {
+        'activities': activities
+    }
+    return render(request, template, context)
+
+
+def retrieve_activity(request, activity_id):
+    activity = Activity.objects.get(pk=activity_id)
+    activity.is_deleted = False
+    activity.save()
+    return redirect('retrieve_activities')
+
+
+def retrieve_questions_view(request):
+    template = 'pages/retrieve_questions.html'
+    questions = Question.objects.filter(is_deleted=True)
+    context = {
+        'questions': questions
+    }
+    return render(request, template, context)
+
+
+def retrieve_question(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    question.is_deleted = False
+    question.save()
+    return redirect('retrieve_questions')
+
+
+def retrieve_answers_view(request):
+    template = 'pages/retrieve_answers.html'
+    answers = Answer.objects.filter(is_deleted=True)
+    context = {
+        'answers': answers
+    }
+    return render(request, template, context)
+
+
+def retrieve_answer(request, answer_id):
+    answer = Answer.objects.get(pk=answer_id)
+    answer.is_deleted = False
+    answer.save()
+    return redirect('retrieve_answers')

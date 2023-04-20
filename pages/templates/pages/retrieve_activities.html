@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="retrieve" class="retrieve content_body">
+
+        <div class="wrapper">
+
+            <div class="retrieve_tbl">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Lesson</th>
+                            <th>Difficulty</th>
+                            <th>Date Created</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in activities %}
+                            <tr>
+                                <td>{{ activity.title }}</td>
+                                <td>{{ activity.description|safe }}</td>
+                                <td>{{ activity.lesson.title }}</td>
+                                <td>{{ activity.difficulty }}</td>
+                                <td>{{ lesson.date_created }}</td>
+                                <td><a href="{% url 'retrieve_activity' activity_id=activity.pk %}">Retrieve</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock content%}
+

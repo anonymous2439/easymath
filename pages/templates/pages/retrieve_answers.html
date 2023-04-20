@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+    <div id="retrieve" class="retrieve content_body">
+
+        <div class="wrapper">
+
+            <div class="retrieve_tbl">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Question</th>
+                            <th>Is Correct?</th>
+                            <th>Date Created</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for answer in answers %}
+                            <tr>
+                                <td>{{ answer.name }}</td>
+                                <td>{{ answer.question.name|safe }}</td>
+                                <td>{{ answer.is_correct }}</td>
+                                <td>{{ answer.date_created }}</td>
+                                <td><a href="{% url 'retrieve_answer' answer_id=answer.pk %}">Retrieve</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock content%}
+

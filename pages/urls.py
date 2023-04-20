@@ -37,4 +37,10 @@ urlpatterns = [
     path('retrieve', views.retrieve_view, name='retrieve'),
     path('retrieve/lessons', views.retrieve_lessons_view, name='retrieve_lessons'),
     path('retrieve/lesson/<int:lesson_id>', views.retrieve_lesson, name='retrieve_lesson'),
+    path('retrieve/activities', views.retrieve_activities_view, name='retrieve_activities'),
+    path('retrieve/activity/<int:activity_id>', views.retrieve_activity, name='retrieve_activity'),
+    path('retrieve/questions', views.retrieve_questions_view, name='retrieve_questions'),
+    path('retrieve/question/<int:question_id>', views.retrieve_question, name='retrieve_question'),
+    path('retrieve/answers', views.retrieve_answers_view, name='retrieve_answers'),
+    path('retrieve/answer/<int:answer_id>', views.retrieve_answer, name='retrieve_answer'),
 ]
