@@ -72,7 +72,7 @@ class UserEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'old_password', 'password1', 'password2', 'first_name', 'middle_name', 'last_name', 'email', 'contact_no', 'is_admin']
+        fields = ['username', 'old_password', 'password1', 'password2', 'first_name', 'middle_name', 'last_name', 'email', 'contact_no']
         widgets = {
             'username': forms.TextInput(attrs={'readonly': 'readonly'})
         }

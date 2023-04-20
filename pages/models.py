@@ -12,6 +12,7 @@ difficulties = (
 
 class Level(models.Model):
     name = models.CharField(max_length=30)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -22,6 +23,7 @@ class Lesson(models.Model):
     description = RichTextField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -45,6 +47,7 @@ class Activity(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     difficulty = models.CharField(max_length=20, choices=difficulties, default='easy')
     date_created = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -72,6 +75,7 @@ class Question(models.Model):
     name = RichTextField()
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -82,6 +86,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

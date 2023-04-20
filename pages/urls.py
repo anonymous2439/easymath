@@ -34,4 +34,7 @@ urlpatterns = [
     path('user/add', views.user_add_view, name='user_add'),
     path('user/edit/<int:user_id>', views.user_edit_view, name='user_edit'),
     path('user/delete/<int:user_id>', views.user_delete, name='user_delete'),
+    path('retrieve', views.retrieve_view, name='retrieve'),
+    path('retrieve/lessons', views.retrieve_lessons_view, name='retrieve_lessons'),
+    path('retrieve/lesson/<int:lesson_id>', views.retrieve_lesson, name='retrieve_lesson'),
 ]

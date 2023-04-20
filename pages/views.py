@@ -185,7 +185,7 @@ def level_view(request):
 
 def lesson_view(request, level_id):
     template = 'pages/lesson.html'
-    lessons = Level.objects.get(pk=level_id).lesson_set.all()
+    lessons = Level.objects.get(pk=level_id).lesson_set.all().filter(is_deleted=False)
     search_text = request.GET.get('s')
     if search_text:
         lessons = lessons.filter(title__icontains=search_text)
@@ -220,7 +220,7 @@ def activity_view(request, lesson_id, difficulty):
     user = request.user
     activities = Lesson.objects.get(pk=lesson_id).activity_set.filter(difficulty=difficulty).annotate(
         submitted=Count('submittedactivity', filter=Q(submittedactivity__submitted_by=user))
-    )
+    ).filter(is_deleted=False)
     search_text = request.GET.get('s')
     if search_text:
         activities = activities.filter(title__icontains=search_text)
@@ -231,7 +231,7 @@ def activity_view(request, lesson_id, difficulty):
 
 def activity_review(request, user_id, activity_id):
     # naa diri ang pag get sa question with their respective answers then ipasa dayon sa template
-    all_questions = Activity.objects.get(pk=activity_id).question_set.all()
+    all_questions = Activity.objects.get(pk=activity_id).question_set.all().filter(is_deleted=False)
     user = User.objects.get(pk=user_id)
     user_answers = UserAnswer.objects.filter(user=user)
     questions = []
@@ -276,11 +276,11 @@ def question_view(request, activity_id):
             pass
 
     # naa diri ang pag get sa question with their respective answers then ipasa dayon sa template
-    all_questions = Activity.objects.get(pk=activity_id).question_set.all()
+    all_questions = Activity.objects.get(pk=activity_id).question_set.all().filter(is_deleted=False)
     user_answers = UserAnswer.objects.filter(user=request.user)
     questions = []
     for question in all_questions:
-        question_dict = {'question': question, 'answers': question.answer_set.all()}
+        question_dict = {'question': question, 'answers': question.answer_set.all().filter(is_deleted=False)}
         user_answer = user_answers.filter(answer__question=question).first()
         if user_answer:
             question_dict['user_answer'] = user_answer
@@ -314,7 +314,7 @@ def question_add_view(request, activity_id):
 
 def question_edit_view(request, question_id):
     question = Question.objects.get(pk=question_id)
-    answers = question.answer_set.all()
+    answers = question.answer_set.all().filter(is_deleted=False)
     if request.method == 'POST':
         question_form = QuestionForm(request.POST, instance=question)
         if question_form.is_valid():
@@ -329,7 +329,8 @@ def question_edit_view(request, question_id):
 
 def question_delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    question.delete()
+    question.is_deleted = True
+    question.save()
     messages.success(request, 'Question Deleted!')
     return redirect('activity_edit', activity_id=question.activity.pk)
 
@@ -371,7 +372,8 @@ def answer_edit_view(request, answer_id):
 
 def answer_delete(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
-    answer.delete()
+    answer.is_deleted = True
+    answer.save()
     messages.success(request, 'Answer Deleted!')
     return redirect('question_edit', question_id=answer.question.pk)
 
@@ -384,7 +386,7 @@ def admin_view(request):
 
 
 def lesson_manage_view(request):
-    lessons = Lesson.objects.all()
+    lessons = Lesson.objects.filter(is_deleted=False)
     context = {
         'lessons': lessons,
     }
@@ -434,7 +436,7 @@ def activity_add_view(request, lesson_id):
 
 def activity_edit_view(request, activity_id):
     activity = Activity.objects.get(pk=activity_id)
-    questions = activity.question_set.all()
+    questions = activity.question_set.all().filter(is_deleted=False)
     if request.method == 'POST':
         activity_form = ActivityForm(request.POST, instance=activity)
         if activity_form.is_valid():
@@ -449,14 +451,15 @@ def activity_edit_view(request, activity_id):
 
 def activity_delete(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    activity.delete()
+    activity.is_deleted = True
+    activity.save()
     messages.success(request, 'Activity Deleted!')
     return redirect('lesson_edit', lesson_id=activity.lesson.pk)
 
 
 def lesson_edit_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
-    activities = lesson.activity_set.all()
+    activities = lesson.activity_set.all().filter(is_deleted=False)
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST, instance=lesson)
         if lesson_form.is_valid():
@@ -471,7 +474,29 @@ def lesson_edit_view(request, lesson_id):
 
 def lesson_delete(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
-    lesson.delete()
+    lesson.is_deleted = True
+    lesson.save()
+    # lesson.delete()
     messages.success(request, 'Lesson Deleted!')
     return redirect('lesson_manage')
 
+
+def retrieve_view(request):
+    template = 'pages/retrieve.html'
+    return render(request, template)
+
+
+def retrieve_lessons_view(request):
+    template = 'pages/retrieve_lessons.html'
+    lessons = Lesson.objects.filter(is_deleted=True)
+    context = {
+        'lessons': lessons
+    }
+    return render(request, template, context)
+
+
+def retrieve_lesson(request, lesson_id):
+    lesson = Lesson.objects.get(pk=lesson_id)
+    lesson.is_deleted = False
+    lesson.save()
+    return redirect('retrieve_lessons')
