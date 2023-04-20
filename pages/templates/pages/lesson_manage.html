@@ -26,7 +26,7 @@
                     <tbody>
                         {% for lesson in lessons %}
                             <tr>
-                                <td><a href="#!">{{ lesson.title }}</a></td>
+                                <td>{{ lesson.title }}</td>
                                 <td>{{ lesson.level }}</td>
                                 <td>{{ lesson.date_created }}</td>
                                 <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'lesson_delete' lesson_id=lesson.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>

@@ -212,6 +212,7 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
 
 /* heading title */
 .heading_title { color: #fff; font-size: 32px; font-weight: 700; line-height: 100%; }
+.heading_title a i { color: #fff; }
 
  /* user table */
  .admin ul { background: #fff; max-width: 500px; padding: 13px 0 40px; margin: 0 auto; }
@@ -222,7 +223,9 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
 /* list */
 .list { width: 100%; margin-top: 40px; }
  .list h3 { text-align: center; font-size: 22px; font-weight: 700; text-transform: uppercase; }
-.list ul li { display: flex; justify-content: space-between; }
+ .list ul { padding: 15px 5px; border: 6px solid #fff; }
+.list ul li { display: flex; justify-content: space-between; border: 1px solid #fff; padding: 10px; margin-bottom: 5px;}
+.list ul li a{margin:0;}
  .list-functions { display: flex; color: #fff; }
  .list-functions a i { color: inherit; }
 

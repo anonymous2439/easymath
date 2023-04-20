@@ -9,7 +9,7 @@
     <div id="user_profile" class="user_profile content_body">
 
         <div class="wrapper">
-            <h2 class="heading_title">User Profile</h2>
+            <h2 class="heading_title">User Profile <a href="{% url 'user_edit' user_id=request.user.pk %}"><i class="fa-solid fa-pencil"></i></a></h2>
             <div class="user_details">
                 <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
                 <p><span>Username: </span>{{ user.username }}</p>

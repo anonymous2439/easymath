@@ -63,3 +63,29 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class UserEditForm(forms.ModelForm):
+    old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='New Password', widget=forms.PasswordInput, required=False)
+    password2 = forms.CharField(label='Confirm New Password', widget=forms.PasswordInput, required=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'old_password', 'password1', 'password2', 'first_name', 'middle_name', 'last_name', 'email', 'contact_no', 'is_admin']
+        widgets = {
+            'username': forms.TextInput(attrs={'readonly': 'readonly'})
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        new_password = self.cleaned_data.get('password1')
+        if new_password:
+            user.set_password(new_password)
+        if commit:
+            user.save()
+        return user

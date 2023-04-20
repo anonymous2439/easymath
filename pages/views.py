@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import User
-from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm
+from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm, UserEditForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
 
@@ -146,16 +146,24 @@ def user_add_view(request):
 
 def user_edit_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
-
+    user_form = UserEditForm(instance=user)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
+            old_password = form.cleaned_data.get('old_password')
+            new_password1 = form.cleaned_data.get('password1')
+            new_password2 = form.cleaned_data.get('password2')
+
+            # check if old password is correct
+            if not user.check_password(old_password):
+                messages.error(request, 'Old password is incorrect')
+
+            # check if new passwords match
+            if new_password1 != new_password2:
+                messages.error(request, 'New passwords do not match')
+
             form.save()
             messages.success(request, USER_EDIT_SUCCESS)
-            return redirect('user_manage')
-    else:
-        user_form = UserForm(instance=user)
-
     template = 'pages/user_edit.html'
     context = {'user_form': user_form, 'user': user}
     return render(request, template, context)
