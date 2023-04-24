@@ -9,7 +9,10 @@
     <div id="lesson_manage" class="lesson_manage content_body">
 
         <div class="wrapper">
-            <h2 class="heading_title">Manage Lessons</h2>
+            <h2 class="content_title">Manage Lessons</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / Lessons
+            </div>
             <div class="lessons_tbl">
                 <div class="tbl_functions">
                     <a href="{% url 'lesson_add' %}">+</a>
@@ -29,7 +32,7 @@
                                 <td>{{ lesson.title }}</td>
                                 <td>{{ lesson.level }}</td>
                                 <td>{{ lesson.date_created }}</td>
-                                <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'lesson_delete' lesson_id=lesson.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
+                                <td><a href="{% url 'lesson_edit' lesson_id=lesson.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="#!" onclick="onDelete({{ lesson.pk }})"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -41,5 +44,21 @@
 {% endblock content%}
 
 {% block scripts %}
-
+<script>
+    function onDelete(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Are you sure you want to delete this Lesson?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace("/lesson/delete/"+id);
+          }
+        });
+    }
+</script>
 {% endblock %}

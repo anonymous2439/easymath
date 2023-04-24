@@ -9,6 +9,10 @@
     <div id="retrieve" class="retrieve content_body">
 
         <div class="wrapper">
+            <h2 class="content_title">Retrieve Lessons</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'retrieve' %}">Retrieve</a> / Lessons
+            </div>
 
             <div class="retrieve_tbl">
                 <table>
@@ -26,7 +30,7 @@
                                 <td>{{ lesson.title }}</td>
                                 <td>{{ lesson.level }}</td>
                                 <td>{{ lesson.date_created }}</td>
-                                <td><a href="{% url 'retrieve_lesson' lesson_id=lesson.pk %}">Retrieve</a></td>
+                                <td><a href="#!" onclick="onRetrieve({{ lesson.pk }})">Retrieve</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -38,3 +42,22 @@
     </div>
 {% endblock content%}
 
+{% block scripts %}
+<script>
+    function onRetrieve(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Are you sure you want to retrieve this Lesson?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, retrieve it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace("/retrieve/lesson/"+id);
+          }
+        });
+    }
+</script>
+{% endblock %}

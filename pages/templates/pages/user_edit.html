@@ -9,6 +9,14 @@
     <div id="admin" class="admin content_body">
 
         <div class="wrapper">
+            <h2 class="content_title">Edit User</h2>
+<!--           THIS BREADCRUMBS SHOULD ONLY SHOW FOR THE ADMIN USER -->
+            {% if user.is_admin %}
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'user_manage' %}">Users</a> / {{ user.username }}
+            </div>
+            {% endif %}
+
             <form class="easymath_form" method="post">
                 {% csrf_token %}
                 {{ user_form|safe }}

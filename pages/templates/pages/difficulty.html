@@ -9,10 +9,11 @@
     <div id="difficulty" class="difficulty content_body">
         <div class="wrapper">
             <div class="difficulty_con">
+                <div class="content_title">DIFFICULTY</div>
                 <div class="breadcrumbs">
                     <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=lesson.level.pk %}">{{ lesson.level.name }}</a> / <a href="{% url 'lesson_single' lesson_id=lesson.pk %}">{{ lesson.title }}</a> / Difficulty
                 </div>
-                <div class="content_title">DIFFICULTY</div>
+
                 <ul>
                     {% for key, value in difficulties %}
                     <li><a href="{% url 'activity' lesson_id=lesson.pk difficulty=key %}">{{ value }}</a></li>

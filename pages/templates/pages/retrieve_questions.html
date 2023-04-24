@@ -9,6 +9,10 @@
     <div id="retrieve" class="retrieve content_body">
 
         <div class="wrapper">
+            <h2 class="content_title">Retrieve Questions</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'retrieve' %}">Retrieve</a> / Questions
+            </div>
 
             <div class="retrieve_tbl">
                 <table>
@@ -26,7 +30,7 @@
                                 <td>{{ question.name|safe }}</td>
                                 <td>{{ question.activity.title }}</td>
                                 <td>{{ question.date_created }}</td>
-                                <td><a href="{% url 'retrieve_question' question_id=question.pk %}">Retrieve</a></td>
+                                <td><a href="#!" onclick="onRetrieve({{ question.pk }})">Retrieve</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -38,3 +42,22 @@
     </div>
 {% endblock content%}
 
+{% block scripts %}
+<script>
+    function onRetrieve(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Are you sure you want to retrieve this Question?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, retrieve it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace("/retrieve/question/"+id);
+          }
+        });
+    }
+</script>
+{% endblock %}

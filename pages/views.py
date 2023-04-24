@@ -499,6 +499,7 @@ def retrieve_lesson(request, lesson_id):
     lesson = Lesson.objects.get(pk=lesson_id)
     lesson.is_deleted = False
     lesson.save()
+    messages.success(request, 'Lesson Retrieved')
     return redirect('retrieve_lessons')
 
 
@@ -515,6 +516,7 @@ def retrieve_activity(request, activity_id):
     activity = Activity.objects.get(pk=activity_id)
     activity.is_deleted = False
     activity.save()
+    messages.success(request, 'Activity Retrieved')
     return redirect('retrieve_activities')
 
 
@@ -531,6 +533,7 @@ def retrieve_question(request, question_id):
     question = Question.objects.get(pk=question_id)
     question.is_deleted = False
     question.save()
+    messages.success(request, 'Question Retrieved')
     return redirect('retrieve_questions')
 
 
@@ -547,4 +550,5 @@ def retrieve_answer(request, answer_id):
     answer = Answer.objects.get(pk=answer_id)
     answer.is_deleted = False
     answer.save()
+    messages.success(request, 'Answer Retrieved')
     return redirect('retrieve_answers')

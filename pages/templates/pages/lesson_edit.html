@@ -8,8 +8,9 @@
 {% block content %}
     <div id="lesson_edit" class="lesson_edit content_body">
         <div class="wrapper">
-            <div class="back_btn">
-                <a href="{% url 'lesson_manage' %}">Go Back</a>
+            <h2 class="content_title">{{ lesson.title }}</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'lesson_manage' %}">Lessons</a> / {{ lesson.title }}
             </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
@@ -24,7 +25,7 @@
                     <h3>Activities</h3>
                     <ul>
                         {% for activity in activities %}
-                            <li><a href="{% url 'activity_edit' activity_id=activity.pk %}">{{ activity }}</a> <div class="list-functions"><a href="{% url 'activity_edit' activity_id=activity.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'activity_delete' activity_id=activity.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></div></li>
+                            <li><a href="{% url 'activity_edit' activity_id=activity.pk %}">{{ activity }}</a> <div class="list-functions"><a href="{% url 'activity_edit' activity_id=activity.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="#!" onclick="onDelete({{ activity.pk }})"><i class="fa-sharp fa-solid fa-trash"></i></a></div></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -46,5 +47,22 @@
 {% endblock content%}
 
 {% block scripts %}
+<script>
+    function onDelete(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Are you sure you want to delete this Activity?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
 
+          if (result.isConfirmed) {
+            window.location.replace("/activity/delete/"+id);
+          }
+        });
+    }
+</script>
 {% endblock %}

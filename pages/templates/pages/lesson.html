@@ -16,10 +16,11 @@
 
         <div class="wrapper">
             <div>
+                <div class="content_title">Lessons</div>
                 <div class="breadcrumbs">
                     <a href="{% url 'level' %}">Levels</a> / {{ lessons.0.level.name }}
                 </div>
-                <div class="content_title">Lessons</div>
+
                 <div class="lesson_main">
                     {% for lesson in lessons %}
                     <section>

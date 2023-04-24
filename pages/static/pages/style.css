@@ -205,9 +205,16 @@ form h2 { color: #fff; font-size: 28px; }
  .dataTables_wrapper .dataTables_filter { margin-bottom: 25px; }
  .tbl_functions { display: flex; justify-content: end; column-gap: 5px; margin-bottom: 15px; }
  .tbl_functions a { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 40px; font-weight: 400; background: #2cd18b; width: 40px; height: 40px; line-height: 43px; border-radius: 7px; margin-top: 39px; }
+ table td a { color: inherit; text-decoration: underline; }
+table td a:hover { text-decoration: none; }
+.dataTables_wrapper { background: #005fff; color: #fff; }
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active { color: #fff !important; }
+.dataTables_wrapper .dataTables_filter input { border: 1px solid #fff; color: inherit; }
+.dataTables_wrapper .dataTables_length select { border: 1px solid #fff; color: inherit; }
+.dataTables_wrapper select option { color: #000; }
 
 /* font awesome */
-i.fa-solid { color: #0a49b3; margin: 0 10px; }
+i.fa-solid { color: #fff; margin: 0 10px; }
 .list ul li a i.fa-solid { color: #fff; }
 
 /* heading title */
@@ -215,10 +222,9 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
 .heading_title a i { color: #fff; }
 
  /* user table */
- .admin ul { background: #fff; max-width: 500px; padding: 13px 0 40px; margin: 0 auto; }
+ .admin ul { background: #005fff; max-width: 500px; padding: 13px 0 40px; margin: 0 auto; }
  .admin ul li { text-align: center; }
  .admin ul li a { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; margin-left: auto; margin-right: auto; }
-
 
 /* list */
 .list { width: 100%; margin-top: 40px; }
@@ -230,9 +236,10 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
  .list-functions a i { color: inherit; }
 
  /* breadcrumbs */
- .breadcrumbs { background: #005fff; color: #fff; padding: 10px;font-weight: 700; }
+ .breadcrumbs { background: #005fff; color: #fff; padding: 10px;font-weight: 700; margin-bottom:40px; }
  .breadcrumbs a { color: #fff; font-weight: 400; }
  .breadcrumbs a:hover{text-decoration:underline;}
+ .breadcrumbs p{display:inline;}
 
  /* level */
  .level_con { padding: 40px 0; }
@@ -263,7 +270,7 @@ i.fa-solid { color: #0a49b3; margin: 0 10px; }
 
 .back_btn a { font-size: 18px; font-weight: 700; background: #2cd18b; width: 93px; height: 43px; line-height: 43px; display:block; text-align: center; color: #fff; border-radius: 7px; }
  .lesson_content { padding: 40px 0 0; }
- .content_title { font-size: 70px; font-weight: 700; line-height: 100%; text-align: center; background: #005fff; border-radius: 11px; padding: 13px 0px; margin: 27px 0 40px; color:#fff;}
+ .content_title { font-size: 70px; font-weight: 700; line-height: 100%; text-align: center; background: #005fff; border-radius: 11px; padding: 13px 0px; margin: 27px 0 20px; color:#fff;text-transform:uppercase;}
  .lesson_main { background: #005fff; padding: 48px 55px; border-radius: 20px; }
  .lesson_main section { border-bottom: 1px solid #000000; padding: 24px 0; position: relative; }
  .lesson_main section h2 { font-size: 25px; font-weight: 700; line-height: 35px; }

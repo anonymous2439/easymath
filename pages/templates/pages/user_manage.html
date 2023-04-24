@@ -9,7 +9,10 @@
     <div id="user_manage" class="user_manage content_body">
 
         <div class="wrapper">
-            <h2 class="heading_title">Manage Users</h2>
+            <h2 class="content_title">Manage Users</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / Users
+            </div>
             <div class="user_tbl">
                 <div class="tbl_functions">
                     <a href="{% url 'user_add' %}">+</a>

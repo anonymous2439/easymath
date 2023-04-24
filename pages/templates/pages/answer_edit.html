@@ -11,6 +11,10 @@
             <div class="back_btn">
                 <a href="{% url 'question_edit' question_id=answer.question.pk %}">Go Back</a>
             </div>
+            <h2 class="content_title">{{ answer.name|safe }}</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'lesson_manage' %}">Lessons</a> / <a href="{% url 'lesson_edit' lesson_id=answer.question.activity.lesson.pk %}">{{ answer.question.activity.lesson.title }}</a> / <a href="{% url 'activity_edit' activity_id=answer.question.activity.pk %}">{{ answer.question.activity.title }}</a> / <a href="{% url 'question_edit' question_id=answer.question.pk %}">{{ answer.question.name|safe }}</a> / {{ answer.name|safe }}
+            </div>
             <form method="post" class="easymath_form">
                 {% csrf_token %}
                 <div id="answer-form">
