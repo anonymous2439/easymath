@@ -1,14 +1,19 @@
+import calendar
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Case, When, IntegerField
+from django.db.models.functions import ExtractMonth
 from django.forms import formset_factory
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import User
-from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm, UserEditForm
+from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm, UserEditForm, \
+    ChangePasswordForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
 
@@ -44,7 +49,6 @@ def home_view(request):
     activities_submitted_id = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
     activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
     total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted_id).count()
-    score = {}
     activity_scores = []
 
     # STORE THE SCORES WHERE THE SCORE DICTIONARY ID IS THE ACTIVITY ID
@@ -59,10 +63,11 @@ def home_view(request):
             'activity': activity_submitted.activity,
             'score': score
         })
+
     context = {
         'total_answered_questions': total_answered_questions,
         'activities_submitted': activities_submitted,
-        'activity_scores': activity_scores
+        'activity_scores': activity_scores,
     }
     return render(request, template, context)
 
@@ -131,6 +136,9 @@ def user_add_view(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.first_name + '.' + user.last_name
+            user.set_password(user.first_name + '.' + user.last_name)
             form.save()
             messages.success(request, USER_ADD_SUCCESS)
             return redirect('user_manage')
@@ -146,9 +154,22 @@ def user_add_view(request):
 
 def user_edit_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    user_form = UserEditForm(instance=user)
+    user_form = UserForm(instance=user)
     if request.method == 'POST':
-        form = UserEditForm(request.POST, instance=user)
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, USER_EDIT_SUCCESS)
+    template = 'pages/user_edit.html'
+    context = {'user_form': user_form, 'user': user}
+    return render(request, template, context)
+
+
+def change_password_view(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user_form = ChangePasswordForm(instance=user)
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, instance=user)
         if form.is_valid():
             old_password = form.cleaned_data.get('old_password')
             new_password1 = form.cleaned_data.get('password1')
@@ -159,14 +180,25 @@ def user_edit_view(request, user_id):
                 messages.error(request, 'Old password is incorrect')
 
             # check if new passwords match
-            if new_password1 != new_password2:
+            elif new_password1 != new_password2:
                 messages.error(request, 'New passwords do not match')
 
-            form.save()
-            messages.success(request, USER_EDIT_SUCCESS)
-    template = 'pages/user_edit.html'
+            else:
+                form.save()
+                messages.success(request, USER_EDIT_SUCCESS)
+                return redirect('login')
+    template = 'pages/user_change_password.html'
     context = {'user_form': user_form, 'user': user}
     return render(request, template, context)
+
+
+def reset_password(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    new_password = user.first_name + '.' + user.last_name
+    user.set_password(new_password)
+    user.save()
+    messages.success(request, 'Password Reset Successfully!')
+    return redirect('user_edit', user_id=user_id)
 
 
 def user_delete(request, user_id):

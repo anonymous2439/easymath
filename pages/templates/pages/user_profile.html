@@ -11,6 +11,7 @@
         <div class="wrapper">
             <h2 class="heading_title">User Profile <a href="{% url 'user_edit' user_id=request.user.pk %}"><i class="fa-solid fa-pencil"></i></a></h2>
             <div class="user_details">
+                <p><a href="{% url 'user_change_password' user_id=user.pk %}">Change Password</a></p>
                 <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
                 <p><span>Username: </span>{{ user.username }}</p>
                 <p><span>Email: </span>{{ user.email }}</p>

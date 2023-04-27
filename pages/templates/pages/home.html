@@ -16,8 +16,38 @@
                     {% endfor %}
                 </ul>
 
+                <div class="charts">
+                    <canvas id="monthly_activity_counts"></canvas>
+                </div>
+
             </div>
 
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    const ctx = document.getElementById('monthly_activity_counts');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+</script>
 {% endblock %}

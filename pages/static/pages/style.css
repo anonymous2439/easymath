@@ -178,6 +178,11 @@ header { position: absolute; top: 0; left: 0; right: 0; z-index: 1; }
 .login_box form { max-width: 100%; flex-direction: column; width: 423px; margin: 0; }
  .login_form_con input { margin-bottom: 0; }
 
+ /* user info functions */
+ .user_info_functions { background: #172b4d; padding: 20px 40px; margin-bottom: 40px; }
+.user_info_functions a { color: #fff; }
+.user_info_functions a:hover { text-decoration: underline; }
+
 /* form */
 form { padding: 40px 25px; display: flex; max-width: 1000px; margin: 0 auto; }
 form label { color: #fff; margin-bottom: 5px; width: 100%;display: block;}

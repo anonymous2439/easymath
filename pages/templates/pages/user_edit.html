@@ -17,6 +17,10 @@
             </div>
             {% endif %}
 
+            <div class="user_info_functions">
+                <a href="{% url 'user_reset_password' user_id=user.pk %}">Reset Password</a>
+            </div>
+
             <form class="easymath_form" method="post">
                 {% csrf_token %}
                 {{ user_form|safe }}

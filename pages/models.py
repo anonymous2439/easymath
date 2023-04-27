@@ -22,6 +22,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=50)
     description = RichTextField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
 
