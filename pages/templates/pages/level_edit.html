@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock head %}
+
+{% block content %}
+    <div id="level_edit" class="level_edit content_body">
+        <div class="wrapper">
+            <h2 class="content_title">{{ level.title }}</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'admin' %}">Manage</a> / <a href="{% url 'level_manage' %}">Levels</a> / {{ level.name }}
+            </div>
+            <form method="post" class="easymath_form">
+                {% csrf_token %}
+                <div id="lesson-form">
+                    <div class="form_header">
+                        <h2>Edit Level</h2>
+                    </div>
+                    {{ level_form.as_p }}
+                </div>
+
+                <div class="form_footer">
+                    <div class="form_footer_btn">
+                        <button type="submit">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock content%}
+

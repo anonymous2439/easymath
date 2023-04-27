@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import User
 from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm, UserEditForm, \
-    ChangePasswordForm
+    ChangePasswordForm, LevelForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
 
@@ -445,6 +445,80 @@ def lesson_add_view(request):
     return render(request, 'pages/lesson_add.html', context)
 
 
+def lesson_edit_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    activities = lesson.activity_set.all().filter(is_deleted=False)
+    if request.method == 'POST':
+        lesson_form = LessonForm(request.POST, instance=lesson)
+        if lesson_form.is_valid():
+            lesson_form.save()
+            messages.success(request, 'Lesson Saved!')
+            return redirect('lesson_manage')
+    else:
+        lesson_form = LessonForm(instance=lesson)
+    context = {'lesson_form': lesson_form, 'lesson': lesson, 'activities': activities,}
+    return render(request, 'pages/lesson_edit.html', context)
+
+
+def lesson_delete(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    lesson.is_deleted = True
+    lesson.save()
+    # lesson.delete()
+    messages.success(request, 'Lesson Deleted!')
+    return redirect('lesson_manage')
+
+
+def level_manage_view(request):
+    levels = Level.objects.filter(is_deleted=False)
+    context = {
+        'levels': levels,
+    }
+    return render(request, 'pages/level_manage.html', context)
+
+
+def level_add_view(request):
+    level = None
+    if request.method == 'POST':
+        level_form = LevelForm(request.POST)
+        if level_form.is_valid():
+            level = level_form.save()
+            messages.success(request, 'New Level Added')
+            return redirect('level_edit', level_id=level.pk)
+        else:
+            messages.error(request, level_form.errors)
+    else:
+        level_form = LevelForm()
+    context = {
+        'level_form': level_form,
+    }
+    if level is not None:
+        context['level'] = level
+    return render(request, 'pages/level_add.html', context)
+
+
+def level_edit_view(request, level_id):
+    level = get_object_or_404(Level, pk=level_id)
+    if request.method == 'POST':
+        level_form = LevelForm(request.POST, instance=level)
+        if level_form.is_valid():
+            level_form.save()
+            messages.success(request, 'Level Saved!')
+            return redirect('level_manage')
+    else:
+        level_form = LevelForm(instance=level)
+    context = {'level_form': level_form, 'level': level}
+    return render(request, 'pages/level_edit.html', context)
+
+
+def level_delete(request, level_id):
+    level = get_object_or_404(Level, pk=level_id)
+    level.is_deleted = True
+    level.save()
+    messages.success(request, 'Level Deleted!')
+    return redirect('level_manage')
+
+
 def activity_add_view(request, lesson_id):
     lesson = Lesson.objects.get(pk=lesson_id)
     if request.method == 'POST':
@@ -487,30 +561,6 @@ def activity_delete(request, activity_id):
     activity.save()
     messages.success(request, 'Activity Deleted!')
     return redirect('lesson_edit', lesson_id=activity.lesson.pk)
-
-
-def lesson_edit_view(request, lesson_id):
-    lesson = get_object_or_404(Lesson, pk=lesson_id)
-    activities = lesson.activity_set.all().filter(is_deleted=False)
-    if request.method == 'POST':
-        lesson_form = LessonForm(request.POST, instance=lesson)
-        if lesson_form.is_valid():
-            lesson_form.save()
-            messages.success(request, 'Lesson Saved!')
-            return redirect('lesson_manage')
-    else:
-        lesson_form = LessonForm(instance=lesson)
-    context = {'lesson_form': lesson_form, 'lesson': lesson, 'activities': activities,}
-    return render(request, 'pages/lesson_edit.html', context)
-
-
-def lesson_delete(request, lesson_id):
-    lesson = get_object_or_404(Lesson, pk=lesson_id)
-    lesson.is_deleted = True
-    lesson.save()
-    # lesson.delete()
-    messages.success(request, 'Lesson Deleted!')
-    return redirect('lesson_manage')
 
 
 def retrieve_view(request):

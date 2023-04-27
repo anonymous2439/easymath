@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock head %}
+
+{% block content %}
+    <div id="level_add" class="level_add content_body">
+        <div class="wrapper">
+            <div class="back_btn">
+                <a href="{% url 'level_manage' %}">Go Back</a>
+            </div>
+            <form method="post" class="easymath_form">
+                {% csrf_token %}
+                <div id="level-form">
+                    <div class="form_header">
+                        <h2>New Level</h2>
+                    </div>
+                    {{ level_form.as_p }}
+                </div>
+
+                <div class="form_footer">
+                    <div class="level-btn">
+                        <button type="submit">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock content%}
+
+{% block scripts %}
+
+{% endblock %}
