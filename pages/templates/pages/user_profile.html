@@ -14,8 +14,8 @@
                 <p><a href="{% url 'user_change_password' user_id=user.pk %}">Change Password</a></p>
                 <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
                 <p><span>Username: </span>{{ user.username }}</p>
-                <p><span>Email: </span>{{ user.email }}</p>
-                <p><span>Contact Number: </span>{{ user.contact_no }}</p>
+                <p><span>Email: </span>{{ user.email|default:"None" }}</p>
+                <p><span>Contact Number: </span>{{ user.contact_no|default:"None" }}</p>
             </div>
 
             <h2>Submitted Activities:</h2>
