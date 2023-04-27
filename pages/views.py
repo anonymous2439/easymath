@@ -634,3 +634,20 @@ def retrieve_answer(request, answer_id):
     answer.save()
     messages.success(request, 'Answer Retrieved')
     return redirect('retrieve_answers')
+
+
+def retrieve_levels_view(request):
+    template = 'pages/retrieve_levels.html'
+    levels = Level.objects.filter(is_deleted=True)
+    context = {
+        'levels': levels
+    }
+    return render(request, template, context)
+
+
+def retrieve_level(request, level_id):
+    level = Level.objects.get(pk=level_id)
+    level.is_deleted = False
+    level.save()
+    messages.success(request, 'Level Retrieved')
+    return redirect('retrieve_levels')

@@ -12,11 +12,15 @@ class LoginForm(forms.Form):
 
 
 class LessonForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditorWidget())  # Use the RichTextField widget
+    description = forms.CharField(widget=CKEditorWidget())
 
     class Meta:
         model = Lesson
         fields = ('title', 'description', 'level')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['level'].queryset = Level.objects.filter(is_deleted=False)
 
 
 class LevelForm(forms.ModelForm):
