@@ -132,7 +132,7 @@ def user_manage(request):
 
 def user_add_view(request):
     template = 'pages/user_add.html'
-
+    user_form = UserForm()
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -142,8 +142,6 @@ def user_add_view(request):
             form.save()
             messages.success(request, USER_ADD_SUCCESS)
             return redirect('user_manage')
-    else:
-        user_form = UserForm()
 
     context = {
         'user_form': user_form,
