@@ -22,6 +22,7 @@
                         <tr>
                             <th>Username</th>
                             <th>Email</th>
+                            <th>Contact No.</th>
                             <th>Administrator</th>
                             <th></th>
                         </tr>
@@ -30,7 +31,8 @@
                         {% for user in users %}
                             <tr>
                                 <td><a href="{% url 'user_profile' user_id=user.pk %}">{{ user.username }}</a></td>
-                                <td>{{ user.email }}</td>
+                                <td>{{ user.email|default:"None" }}</td>
+                                <td>{{ user.contact_no|default:"None" }}</td>
                                 <td>{{ user.is_admin }}</td>
                                 <td><a href="{% url 'user_edit' user_id=user.pk %}"><i class="fa-solid fa-pencil"></i></a> | <a href="{% url 'user_delete' user_id=user.pk %}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
                             </tr>
