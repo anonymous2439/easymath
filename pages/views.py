@@ -430,7 +430,9 @@ def lesson_add_view(request):
     if request.method == 'POST':
         lesson_form = LessonForm(request.POST)
         if lesson_form.is_valid():
-            lesson = lesson_form.save()
+            lesson = lesson_form.save(commit=False)
+            lesson.created_by = request.user
+            lesson.save()
             messages.success(request, 'New Lesson Added')
             return redirect('lesson_edit', lesson_id=lesson.pk)
         else:
