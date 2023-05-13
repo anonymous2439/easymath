@@ -34,6 +34,11 @@
                     {% endfor %}
                 </ul>
             </div>
+
+            <div class="breadcrumbs">
+                <a href="{% url 'user_profile' user_id=user.pk %}">Back</a>
+            </div>
+
             {% for question_dict in questions %}
             <div class="question" id="question-{{ question_dict.question.pk }}">
 

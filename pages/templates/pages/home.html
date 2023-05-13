@@ -8,13 +8,15 @@
 
             <div class="home_con">
 
-                <h2>Submitted Activities:</h2>
+                <div class="list">
+                    <h3>Submitted Activities:</h3>
 
-                <ul>
-                    {% for activity_score in activity_scores %}
-                    <li>{{ activity_score.activity }}- ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
-                    {% endfor %}
-                </ul>
+                    <ul>
+                        {% for activity_score in activity_scores %}
+                        <li>{{ activity_score.activity }}- ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
                 <div class="charts">
                     <canvas id="monthly_activity_counts"></canvas>

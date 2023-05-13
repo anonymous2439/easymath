@@ -9,21 +9,26 @@
     <div id="user_profile" class="user_profile content_body">
 
         <div class="wrapper">
-            <h2 class="heading_title">User Profile <a href="{% url 'user_edit' user_id=request.user.pk %}"><i class="fa-solid fa-pencil"></i></a></h2>
+            <h2 class="heading_title">User Profile</h2>
+            <div class="heading_links">
+                <a href="{% url 'user_edit' user_id=user.pk %}">Edit Profile</a>
+                <a href="{% url 'user_change_password' user_id=user.pk %}">Change Password</a>
+            </div>
             <div class="user_details">
-                <p><a href="{% url 'user_change_password' user_id=user.pk %}">Change Password</a></p>
                 <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
                 <p><span>Username: </span>{{ user.username }}</p>
                 <p><span>Email: </span>{{ user.email|default:"None" }}</p>
                 <p><span>Contact Number: </span>{{ user.contact_no|default:"None" }}</p>
             </div>
 
-            <h2>Submitted Activities:</h2>
-            <ul>
-                {% for activity_score in activity_scores %}
-                <li><a href="{% url 'activity_review' user_id=user.pk activity_id=activity_score.activity.pk %}">{{ activity_score.activity }}</a> - ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
-                {% endfor %}
-            </ul>
+            <div class="list">
+                <h3>Submitted Activities:</h3>
+                <ul>
+                    {% for activity_score in activity_scores %}
+                    <li><a href="{% url 'activity_review' user_id=user.pk activity_id=activity_score.activity.pk %}">{{ activity_score.activity }}</a>({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
 
     </div>

@@ -16,6 +16,7 @@ from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm
     ChangePasswordForm, LevelForm
 from .models import Lesson, Activity, Level, UserAnswer, Answer, FinishedLesson, SubmittedActivity, Question
 from django.utils.safestring import mark_safe
+from .classes import AccountManager
 
 difficulties = (
     ('easy', 'EASY MODE'),
@@ -99,23 +100,9 @@ def login_user_view(request):
 def user_profile(request, user_id):
     user = User.objects.get(pk=user_id)
     template = 'pages/user_profile.html'
-    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
-    score = {}
-    activity_scores = []
+    account_manager = AccountManager(user)
+    activity_scores = account_manager.get_activity_scores()
 
-    # STORE THE SCORES WHERE THE SCORE DICTIONARY ID IS THE ACTIVITY ID
-    for activity_submitted in activities_submitted:
-        correct_answer = UserAnswer.objects.filter(user=user, answer__is_correct=True,
-                                                   answer__question__activity=activity_submitted.activity).count()
-        total = activity_submitted.activity.question_set.count()
-        score = {
-            'correct_answer': correct_answer,
-            'total': total
-        }
-        activity_scores.append({
-            'activity': activity_submitted.activity,
-            'score': score
-        })
     context = {
         'user': user,
         'activity_scores': activity_scores
@@ -173,12 +160,16 @@ def change_password_view(request, user_id):
             new_password1 = form.cleaned_data.get('password1')
             new_password2 = form.cleaned_data.get('password2')
 
+            account_manager = AccountManager(user)
+            password_validator = account_manager.validate_new_password(old_password, new_password1, new_password2)
+            print(password_validator)
+
             # check if old password is correct
-            if not user.check_password(old_password):
+            if password_validator['error_code'] == 1:
                 messages.error(request, 'Old password is incorrect')
 
             # check if new passwords match
-            elif new_password1 != new_password2:
+            elif password_validator['error_code'] == 2:
                 messages.error(request, 'New passwords do not match')
 
             else:
@@ -191,11 +182,14 @@ def change_password_view(request, user_id):
 
 
 def reset_password(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    new_password = user.first_name + '.' + user.last_name
-    user.set_password(new_password)
-    user.save()
+    user = User.objects.get(pk=user_id)
+    print(request.user)
+    print(user)
+    account_manager = AccountManager(user)
+    account_manager.reset_password()
     messages.success(request, 'Password Reset Successfully!')
+    if request.user == user:
+        return redirect('home')
     return redirect('user_edit', user_id=user_id)
 
 
