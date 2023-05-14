@@ -78,6 +78,7 @@ button, html input[type=button], input[type=reset], input[type=submit] { -webkit
 input, textarea, select{-webkit-appearance: none;}
 mark {background-color: transparent;}
 input{-webkit-appearance: auto;}
+input[type="radio"] {font-size: 40px;height: 25px;width: 25px;}
 
 body{margin:0;line-height: 1;font-size: 22px; line-height: 22px; font-family: mada; position:relative; color:#1a1a1a;overflow-x: hidden;}
 body.active{overflow: hidden;width:100%;height:100%;position:fixed!important;}
@@ -264,7 +265,7 @@ i.fa-solid { color: #fff; margin: 0 10px; }
  .left_nav nav a { color: #fff; display: block; line-height: 100px; }
 .nav_footer a { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 224px; height: 43px; line-height: 43px; border-radius: 7px; margin-top: 39px; }
 
- .content_header { border-bottom: 1px solid #fff;position: fixed; top: 0; left: 0; right: 0; background: #0a49b3; max-width: 1375px;margin: 0 auto;}
+ .content_header { border-bottom: 1px solid #fff;position: fixed; top: 0; left: 0; right: 0; background: #0a49b3; max-width: 1375px;margin: 0 auto; z-index:1;}
 .content_header_con { padding: 20px 30px; }
 .content_header form { float: left; }
 .content_header form input { background: #003287; width: 100%; color: #fff; border: none; height: 37px; width: 210px; padding: 0 42px; border-radius: 100px; font-family:mada;font-size:16px;}
@@ -341,3 +342,11 @@ i.fa-solid { color: #fff; margin: 0 10px; }
  .heading_links { margin: 40px 0 0; display: flex; column-gap: 25px; }
  .heading_links a { text-decoration: underline; color: #fff; }
  .heading_links a:hover { text-decoration: none; }
+
+ /* dashboard */
+ .dashboard_title { color: #fff; font-weight: 700; text-transform: uppercase; margin-bottom: 40px; font-size: 32px; }
+ #total_count { color: #fff; display: flex; justify-content: center; column-gap: 100px; text-align: center; }
+ #total_count section { background: #005fff; width: 347px; padding: 30px 15px;}
+ #total_count section p { font-size: 18px; }
+ #total_count section h2 { font-size: 80px; line-height: 100%; }
+.dashboard_con { border: 2px solid #ffffff28; padding: 25px; margin-bottom: 15px; }

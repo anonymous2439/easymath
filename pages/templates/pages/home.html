@@ -8,14 +8,51 @@
 
             <div class="home_con">
 
-                <div class="list">
-                    <h3>Submitted Activities:</h3>
+                <div class="dashboard_con">
+                    <h3 class="dashboard_title">Submitted Activities:</h3>
 
-                    <ul>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Submitted By</th>
+                                <th>Score</th>
+                                <th>Date Submitted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {% for activity_score in activity_scores %}
-                        <li>{{ activity_score.activity }}- ({{ activity_score.score.correct_answer }} / {{ activity_score.score.total }})</li>
+                            <tr>
+                                <td><a href="{% url 'activity_review' user_id=activity_score.activity_submitted.submitted_by.pk activity_id=activity_score.activity_submitted.activity.pk %}">{{ activity_score.activity_submitted.activity }}</a></td>
+                                <td><a href="{% url 'user_profile' user_id=activity_score.activity_submitted.submitted_by.pk %}">{{ activity_score.activity_submitted.submitted_by }}</a></td>
+                                <td>{{ activity_score.score.correct_answer }} / {{ activity_score.score.total }}</td>
+                                <td>{{ activity_score.activity_submitted.date_submitted }}</td>
+                            </tr>
                         {% endfor %}
-                    </ul>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="dashboard_con" id="total_count">
+                    <section>
+                        <p>Total activities this month:</p>
+                        <h2>{{ total_activities_created }}</h2>
+                    </section>
+                    <section>
+                        <p>Total submitted activities this month:</p>
+                        <h2>{{ total_activities_submitted }}</h2>
+                    </section>
+                </div>
+
+                <div class="dashboard_con">
+                    <h3 class="dashboard_title">Top 10 users with most submitted activities</h3>
+                    <div class="list">
+                        <ul>
+                            {% for top_user in top_users %}
+                                <li><a href="{% url 'user_profile' user_id=top_user.pk %}">{{ top_user }}</a>{{ top_user.num_submitted_activities }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="charts">
@@ -36,10 +73,10 @@
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          labels: [],
           datasets: [{
             label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [],
             borderWidth: 1
           }]
         },

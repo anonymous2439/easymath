@@ -6,10 +6,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count, Q, Case, When, IntegerField
-from django.db.models.functions import ExtractMonth
+from django.db.models.functions import ExtractMonth, TruncMonth
 from django.forms import formset_factory
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 
 from accounts.models import User
 from .forms import LoginForm, LessonForm, ActivityForm, QuestionForm, AnswerForm, UserForm, UserEditForm, \
@@ -47,10 +48,34 @@ def home_view(request):
     template = 'pages/home.html'
     user = request.user
 
+    current_month = timezone.now().month
+    current_year = timezone.now().year
+    total_activities_created = Activity.objects.filter(date_created__month=current_month,
+                                                       date_created__year=current_year).count()
+    total_activities_submitted = SubmittedActivity.objects.filter(date_submitted__month=current_month, date_submitted__year=current_year).count()
+    top_users = User.objects.annotate(num_submitted_activities=Count('submittedactivity')).order_by('-num_submitted_activities')[:10]
     activities_submitted_id = SubmittedActivity.objects.filter(submitted_by=user).values_list('activity_id', flat=True)
-    activities_submitted = SubmittedActivity.objects.filter(submitted_by=user)
+    activities_submitted = SubmittedActivity.objects.all()
     total_answered_questions = UserAnswer.objects.filter(user=user, answer__question__activity__in=activities_submitted_id).count()
     activity_scores = []
+
+    # get the submitted activities grouped by month
+    submitted_activities = SubmittedActivity.objects.filter(date_submitted__year=current_year) \
+        .annotate(month=TruncMonth('date_submitted')) \
+        .values('month') \
+        .annotate(count=Count('id')) \
+        .order_by('month')
+
+    # convert the queryset to an array with month and count values
+    act_months = []
+    act_counts = []
+    for activity in submitted_activities:
+        act_months.append(activity['month'].strftime('%B'),)
+        act_counts.append(activity['count'])
+    monthly_submitted_activities = {
+        'months': act_months,
+        'counts': act_counts,
+    }
 
     # STORE THE SCORES WHERE THE SCORE DICTIONARY ID IS THE ACTIVITY ID
     for activity_submitted in activities_submitted:
@@ -61,7 +86,7 @@ def home_view(request):
             'total': total
         }
         activity_scores.append({
-            'activity': activity_submitted.activity,
+            'activity_submitted': activity_submitted,
             'score': score
         })
 
@@ -69,6 +94,10 @@ def home_view(request):
         'total_answered_questions': total_answered_questions,
         'activities_submitted': activities_submitted,
         'activity_scores': activity_scores,
+        'total_activities_created': total_activities_created,
+        'total_activities_submitted': total_activities_submitted,
+        'top_users': top_users,
+        'monthly_submitted_activities': monthly_submitted_activities,
     }
     return render(request, template, context)
 
@@ -254,6 +283,7 @@ def activity_view(request, lesson_id, difficulty):
 
 
 def activity_review(request, user_id, activity_id):
+    activity = Activity.objects.get(pk=activity_id)
     # naa diri ang pag get sa question with their respective answers then ipasa dayon sa template
     all_questions = Activity.objects.get(pk=activity_id).question_set.all().filter(is_deleted=False)
     user = User.objects.get(pk=user_id)
@@ -267,6 +297,7 @@ def activity_review(request, user_id, activity_id):
         questions.append(question_dict)
     context = {
         'questions': questions,
+        'activity': activity,
         'user': user
     }
     template = 'pages/activity_review.html'

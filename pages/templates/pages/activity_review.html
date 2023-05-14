@@ -27,16 +27,14 @@
     <div class="wrapper">
         <div class="activity_review_con">
 
+            <h2 class="content_title">{{ activity }}</h2>
+
             <div class="question_sidebar">
                 <ul>
                     {% for question_dict in questions %}
                     <li><a href="#question-{{ question_dict.question.pk }}">Question {{ forloop.counter }}</a></li>
                     {% endfor %}
                 </ul>
-            </div>
-
-            <div class="breadcrumbs">
-                <a href="{% url 'user_profile' user_id=user.pk %}">Back</a>
             </div>
 
             {% for question_dict in questions %}
