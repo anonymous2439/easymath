@@ -315,12 +315,14 @@ i.fa-solid { color: #fff; margin: 0 10px; }
  .question form button { color: #fff; text-decoration: none; display: block; text-align: center; font-size: 18px; font-weight: 700; background: #2cd18b; width: 156px;position: fixed;top: 652px;right: 57px; height: 43px; line-height: 43px; border-radius: 7px; border: none; transition: .6s;}
  .question form button:hover { opacity: .7; }
  .question section h2 p { display: inline; }
+ .question section h2 span {color: #2cd18b;font-weight: 600;}
  .question_sidebar { background: #005fff;color: #fff; width: 195px; font-size: 20px; position: fixed; min-height: 300px; transform: translate(-36px, -200px);right: 0;padding: 15px 0;}
  .question_sidebar h2 {text-align: center;text-transform: uppercase;margin-bottom: 15px;}
  .question_sidebar ul { overflow: auto; height: 300px; height: 507px; padding: 20px;}
  .question_sidebar ul li { margin-bottom: 5px; }
  .question_sidebar ul li a { display: block; padding: 10px; border: 1px solid #fff; color: inherit; }
  .question_sidebar ul li a:hover { background: #2cd18b; color: #fff; }
+
 
  /* answers */
  .answer_con { display: flex; align-items: center;margin-bottom: 15px; }
