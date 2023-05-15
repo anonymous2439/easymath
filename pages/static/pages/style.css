@@ -236,7 +236,7 @@ i.fa-solid { color: #fff; margin: 0 10px; }
 .list { width: 100%; margin-top: 40px; }
  .list h3 { text-align: center; font-size: 22px; font-weight: 700; text-transform: uppercase; color: #fff;margin-bottom: 20px;}
  .list ul { padding: 15px;background: #ffffff1a;}
-.list ul li { display: flex; justify-content: space-between; border: 1px solid #fff; padding: 10px; margin-bottom: 5px;color: #fff;}
+.list ul li { display: flex; justify-content: space-between; border-bottom: 1px solid #ffffff35; padding: 10px; margin-bottom: 5px;color: #fff;}
 .list ul li a{margin:0;color: #fff;text-decoration: underline;}
  .list ul li a:hover { text-decoration: none; }
  .list-functions { display: flex; color: #fff; }
