@@ -28,8 +28,11 @@
         <div class="activity_review_con">
 
             <h2 class="content_title">{{ activity }}</h2>
-
+            <div class="breadcrumbs">
+                <a href="{% url 'level' %}">Levels</a> / <a href="{% url 'lesson' level_id=activity.lesson.level.pk %}">{{ activity.lesson.level.name }}</a> / <a href="{% url 'lesson_single' lesson_id=activity.lesson.pk %}">{{ activity.lesson.title }}</a> / <a href="{% url 'difficulty' lesson_id=activity.lesson.pk %}">Difficulty</a> / <a href="{% url 'activity' lesson_id=activity.lesson.pk difficulty=activity.difficulty %}">{{ activity.difficulty }}</a> / {{ activity }}
+            </div>
             <div class="question_sidebar">
+                <h2>Score: {{ correct_answers }} / {{ total }}</h2>
                 <ul>
                     {% for question_dict in questions %}
                     <li><a href="#question-{{ question_dict.question.pk }}">Question {{ forloop.counter }}</a></li>

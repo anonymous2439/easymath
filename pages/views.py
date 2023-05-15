@@ -45,6 +45,8 @@ def intro_view(request):
 def home_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    elif not request.user.is_admin:
+        return redirect('user_profile', user_id=request.user.pk)
     template = 'pages/home.html'
     user = request.user
 
@@ -168,9 +170,9 @@ def user_add_view(request):
 
 def user_edit_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    user_form = UserForm(instance=user)
+    user_form = UserEditForm(instance=user)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, USER_EDIT_SUCCESS)
@@ -288,6 +290,9 @@ def activity_review(request, user_id, activity_id):
     all_questions = Activity.objects.get(pk=activity_id).question_set.all().filter(is_deleted=False)
     user = User.objects.get(pk=user_id)
     user_answers = UserAnswer.objects.filter(user=user)
+    correct_answers = UserAnswer.objects.filter(user=user, answer__is_correct=True,
+                                               answer__question__activity=activity).count()
+    total = activity.question_set.count()
     questions = []
     for question in all_questions:
         question_dict = {'question': question, 'answers': question.answer_set.all()}
@@ -298,7 +303,9 @@ def activity_review(request, user_id, activity_id):
     context = {
         'questions': questions,
         'activity': activity,
-        'user': user
+        'user': user,
+        'correct_answers': correct_answers,
+        'total': total,
     }
     template = 'pages/activity_review.html'
     return render(request, template, context)

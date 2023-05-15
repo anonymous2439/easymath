@@ -45,8 +45,9 @@
             <div class="main_logo"><a href="{% url 'home' %}"><figure><img src="{% static 'pages/images/logo.png' %}"/></figure></a></div>
             <nav>
                 <ul>
-                    <li><a href="{% url 'home' %}">Dashboard</a></li>
+
                     {% if request.user.is_admin %}
+                     <li><a href="{% url 'home' %}">Dashboard</a></li>
                     <li><a href="{% url 'admin' %}">Admin</a></li>
                     {% endif %}
                     <li><a href="{% url 'user_profile' user_id=request.user.pk %}">Profile</a></li>

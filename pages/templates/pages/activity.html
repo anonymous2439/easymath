@@ -27,8 +27,9 @@
                         <h2>{{ activity.title }}</h2>
                         <p>{{ activity.description|safe }}</p>
                         {% if activity.submitted > 0 %}
+                        <a href="{% url 'activity_review' user_id=request.user.pk activity_id=activity.pk %}"><figure><img src="{% static 'pages/images/reviews.png' %}"/></figure></a>
                         {% else %}
-                        <a href="{% url 'question' activity_id=activity.pk %}">Play</a>
+                        <a href="{% url 'question' activity_id=activity.pk %}"><figure><img src="{% static 'pages/images/play-button.png' %}"/></figure></a>
                         {% endif %}
                     </section>
                     {% endfor %}

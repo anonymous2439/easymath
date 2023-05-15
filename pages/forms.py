@@ -83,13 +83,10 @@ class ChangePasswordForm(forms.ModelForm):
 
 
 class UserEditForm(forms.ModelForm):
-    old_password = forms.CharField(label='Old Password', widget=forms.PasswordInput)
-    password1 = forms.CharField(label='New Password', widget=forms.PasswordInput, required=False)
-    password2 = forms.CharField(label='Confirm New Password', widget=forms.PasswordInput, required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'old_password', 'password1', 'password2', 'first_name', 'middle_name', 'last_name', 'email', 'contact_no']
+        fields = ['first_name', 'middle_name', 'last_name', 'email', 'contact_no']
         widgets = {
             'username': forms.TextInput(attrs={'readonly': 'readonly'})
         }

@@ -10,10 +10,12 @@
 
         <div class="wrapper">
             <h2 class="heading_title">User Profile</h2>
+            {% if user == request.user or request.user.is_admin %}
             <div class="heading_links">
                 <a href="{% url 'user_edit' user_id=user.pk %}">Edit Profile</a>
                 <a href="{% url 'user_change_password' user_id=user.pk %}">Change Password</a>
             </div>
+            {% endif %}
             <div class="user_details">
                 <p><span>Name: </span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</p>
                 <p><span>Username: </span>{{ user.username }}</p>
